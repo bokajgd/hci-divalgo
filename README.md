@@ -1,5 +1,5 @@
 <br />
-  <h1 align="center">Divalgo - An interactive tool for diagnoising and evaluating machine learning algorithms.
+  <h1 align="center">Divalgo - An interactive tool for diagnoising and evaluating machine learning algorithms
  </h1>
  <h1 align="center">Human Computer Interaction Exam 2022</h1>
 
