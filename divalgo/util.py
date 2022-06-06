@@ -1,20 +1,12 @@
 import os
 import streamlit as st
 from sklearn.base import is_classifier, is_regressor
-import matplotlib.pyplot as plt
-import plotly.express as px
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import plotly.graph_objects as go
-from ipywidgets import Output, VBox
+import plotly.figure_factory as ff
 import pandas as pd
 import pickle 
-from ipywidgets import HTML
-from sklearn.metrics import confusion_matrix
-
-def show_heatmap(palette=None):
-    print("heatmap")
-
-def show_confusion_matrix():
-    print("Confusion")
+import numpy as np
 
 def accuracy_chart_type(confusion:tuple, 
                         labels =["True positive", "True negative", "False positive", "False negative"], 
@@ -36,7 +28,7 @@ def accuracy_chart_type(confusion:tuple,
                      sort=False,
                      direction="clockwise")]
     )
-    fig.update_traces(textposition='inside', textinfo='percent+label', marker = dict(colors = colors))
+    fig.update_traces(textposition='inside', textinfo='percent+label', marker = dict(colors = colors), textfont_size=18)
     fig.update_layout(showlegend=False, font_family="Times New Roman")
     
     return fig
@@ -61,12 +53,35 @@ def accuracy_chart(accuracy,
 
     fig = go.FigureWidget()
     fig.add_pie(values=df["Value"], labels=df["Type"], marker = dict(colors=colors))
-    fig.update_traces(textposition='inside', textinfo='percent+label')
+    fig.update_traces(textposition='inside', textinfo='percent+label', textfont_size=20)
     fig.update_layout(showlegend=False,
                       font_family="Times New Roman")
     
     return fig
 
+
+def confusion_mat(y_test, y_pred):
+    matrix = confusion_matrix(y_test, y_pred)
+    # color_vals = matrix/np.amax(matrix)
+    # print(list(color_vals.flatten()))
+    # col_vals = [[]]
+    min_color = "rgb(153, 184, 152)"
+    max_color = "rgb(255, 132, 124)"
+
+    labels=["Dogs", "Wolfs"] # How to know what to use here????
+    z_text = z_text = [[str(y) for y in x] for x in matrix]
+    fig = ff.create_annotated_heatmap(matrix, 
+                                      x=labels, 
+                                      y=labels, 
+                                      annotation_text=z_text, 
+                                      font_colors = [min_color, max_color]
+                                      )
+
+    # fig = ConfusionMatrixDisplay(matrix, display_labels=labels)
+    # fig.plot()
+    fig.update_layout(width=400, height=400)
+    
+    return fig
 
 
 class Evaluate:
@@ -90,11 +105,9 @@ class Evaluate:
 
         os.system(f'streamlit run {os.path.join("divalgo", "frontpage.py")}')
 
-    def heatmap(self, palette=None):
-        show_heatmap(palette)
-    
     def confusion(self):
-        show_confusion_matrix()
+        fig = confusion_mat(self.y_test, self.y_pred)
+        fig.show()
     
     def accuracy(self, accuracy, labels=["True predictions", "False predictions"]):
         fig = accuracy_chart(accuracy, labels, [self.colors[i] for i in [0,2]])
