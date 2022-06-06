@@ -11,6 +11,7 @@ import random
 from PIL import Image
 import warnings
 warnings.filterwarnings('ignore') # filter warnings
+from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -30,11 +31,11 @@ import io
 import base64
 
 
-
+pwd = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
 
 # Load data
-dogs = sorted(os.listdir(os.path.join("data", "dogs")))
-wolves =  sorted(os.listdir(os.path.join("data", "wolves")))
+dogs = sorted(os.listdir(os.path.join(pwd, "data/dogs")))
+wolves =  sorted(os.listdir(os.path.join(pwd, "data/wolves")))
 
 # Preprocessing
 img_size = 50
