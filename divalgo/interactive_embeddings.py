@@ -11,7 +11,6 @@ import random
 from PIL import Image
 import warnings
 warnings.filterwarnings('ignore') # filter warnings
-from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -31,11 +30,11 @@ import io
 import base64
 
 
-pwd = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+
 
 # Load data
-dogs = sorted(os.listdir(os.path.join(pwd, "data/dogs")))
-wolves =  sorted(os.listdir(os.path.join(pwd, "data/wolves")))
+dogs = sorted(os.listdir(os.path.join("data", "dogs")))
+wolves =  sorted(os.listdir(os.path.join("data", "wolves")))
 
 # Preprocessing
 img_size = 50
@@ -148,10 +147,10 @@ plot_figure.add_tools(HoverTool(tooltips="""
         <img src='@image' style='float: left; margin: 5px 5px 5px 5px'/>
     </div>
     <div>
-        <span style='font-size: 12px'>@category</span>
+        <span style='font-size: 12px'> <strong> Predicted class: </strong> @prediction</span>
     </div>
-    </div>
-        <span style='font-size: 12px'>@prediction</span>
+    <div>
+        <span style='font-size: 12px'> <strong> True class: </strong>  @category </span>
     </div>
 </div>
 """))
@@ -165,6 +164,8 @@ plot_figure.scatter(
     fill_alpha=0.6,
     size=8
 )
+
+
 #source.selected.indices #this is what the lasso-selected points should be saved under
 
 show(plot_figure) 
