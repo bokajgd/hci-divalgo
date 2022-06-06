@@ -1,59 +1,45 @@
 import streamlit as st
-import pandas as pd
 import util as div
-import sys
-import os
-import pickle
-import shutil
+import pandas as pd
 from sklearn.metrics import accuracy_score, confusion_matrix
+import pickle
+import os
+import shutil
+
+
+colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
+st.set_page_config(page_title="DIVALGO", layout="centered")
+
 
 def main(df, model):
-    colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
-    st.set_page_config(page_title="DIVALGO", layout="centered")
-
-    st.title("DIVALGO - diagnose and evaluate your model")
-
-    st.write("""Welcome to DIVALGO. 
-    On this page, you can explroe visualizations of your models, its predictions and its errors. 
-    This first visualization shows accuracy. 
-    """)
-
     ############
     # ACCURACY #
     ############
     acc = accuracy_score(df["y_test"], df["y_pred"])
     if "acc_by_type" not in st.session_state:
         st.session_state["acc_by_type"]=None
-
-    # col1, col2 = st.columns([1,4])
-    # with col1:
     acc_by_type = st.checkbox("Split by type")
-    st.session_state["acc_by_type"]=acc_by_type
+    st.session_state["acc_by_type"]=acc_by_type 
     
     if not st.session_state["acc_by_type"]:
         accuracy_chart = div.accuracy_chart(acc, colors=[colors[i] for i in [0,2]])
     if st.session_state["acc_by_type"]:
         tn, fp, fn, tp = confusion_matrix(df["y_test"], df["y_pred"]).ravel()
         accuracy_chart = div.accuracy_chart_type((tp,tn,fp,fn), colors=colors)
-    
-    # with col2:
     accuracy_chart.update_layout(
-    # autosize=False,
-    # width=500,
-    # height=500,
-    margin=dict(
-        l=1,
-        r=1,
-        b=10,
-        t=10,
-        pad=4
-    ),
-    # paper_bgcolor="LightSteelBlue",
-)
-
+        margin=dict(
+            l=1,
+            r=1,
+            b=10,
+            t=10,
+            pad=4
+        )
+    )
     st.plotly_chart(accuracy_chart)
-
     
+    with st.expander("Help"):
+        st.write("Something about accuracy and FP vs FN vs TP vs TN and a link to some page")
+
 if __name__ == "__main__":
 
     # Check if the data is already loaded
@@ -76,4 +62,3 @@ if __name__ == "__main__":
         model = st.session_state["model"]
 
     main(df, model)
-
