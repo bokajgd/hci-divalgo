@@ -59,8 +59,8 @@ This repository has the following structure:
 
 | Column | Description|
 |--------|:-----------|
-```src/``` | Directory containing the scripts of the analysis
+```divalgo/``` | Directory containing the streamlit app and visualization tools
 ```vis/``` | Directory containing all visualizations
-```data/``` | Directory containing all visualizations
+```demo.ipynb``` | Notebook demonstrating how to use the divalgo algorithm
 ```requirements.txt``` | A list of the required packages.
 ```README.md``` | This v list of the files that git should ignore upon push/pulling (eery README file.
