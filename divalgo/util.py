@@ -103,7 +103,7 @@ class Evaluate:
         df.to_csv(os.path.join("tmp", "data.csv"))
         pickle.dump(self.model, open(os.path.join("tmp", "model.pkl"), "wb"))
 
-        os.system(f'streamlit run {os.path.join("divalgo", "frontpage.py")}')
+        os.system(f'streamlit run {os.path.join("divalgo", "🚪frontpage.py")}')
 
     def confusion(self):
         fig = confusion_mat(self.y_test, self.y_pred)
