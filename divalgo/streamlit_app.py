@@ -37,6 +37,20 @@ def main(df, model):
         accuracy_chart = div.accuracy_chart_type((tp,tn,fp,fn), colors=colors)
     
     # with col2:
+    accuracy_chart.update_layout(
+    # autosize=False,
+    # width=500,
+    # height=500,
+    margin=dict(
+        l=1,
+        r=1,
+        b=10,
+        t=10,
+        pad=4
+    ),
+    # paper_bgcolor="LightSteelBlue",
+)
+
     st.plotly_chart(accuracy_chart)
 
     
