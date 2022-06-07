@@ -118,12 +118,14 @@ class Evaluate:
         self.y_test = y_test
         self.y_pred = y_pred
         self.filenames = filenames
+        self.y_pred_probs = self.model.predict_proba(self.X_test)
         self.colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
     
     def open_visualization(self):
         df = pd.DataFrame(self.X_test)
         df["y_test"] = self.y_test
         df["y_pred"] = self.y_pred
+        df["y_pred_probs"] = self.y_pred_probs
         df["filename"] = self.filenames
 
         os.makedirs("tmp")
