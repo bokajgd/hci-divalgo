@@ -57,14 +57,6 @@ After cloning the repo, creating the virtual environment you should be ready to 
 
 This repository has the following structure:
 
-| Column | Description|
-|--------|:-----------|
-```divalgo/``` | Directory containing the streamlit app and visualization tools
-```vis/``` | Directory containing all visualizations
-```demo.ipynb``` | Notebook demonstrating how to use the divalgo algorithm
-```requirements.txt``` | A list of the required packages.
-```README.md``` | This v list of the files that git should ignore upon push/pulling (eery README file.
-
 ```
 ├── .streamlit           
 │   └── config.toml        <- app setup configuration file
