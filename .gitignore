@@ -13,7 +13,7 @@
 # Other files
 *.jpg
 *.jpeg
-*.png
+#*.png
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
