@@ -31,10 +31,10 @@ def sample_image(df, error_class, prediction_type, class_list, n_images):
     return images, classification, own, other
 
 def main(df):
-    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
 
     with st.sidebar.container():
-        image = Image.open("../logos/logo.png")
+        image = Image.open(os.path.join("logos", "logo.png"))
         st.image(image, use_column_width=True)
 
     st.markdown("# Model predictions")
