@@ -64,3 +64,20 @@ This repository has the following structure:
 ```demo.ipynb``` | Notebook demonstrating how to use the divalgo algorithm
 ```requirements.txt``` | A list of the required packages.
 ```README.md``` | This v list of the files that git should ignore upon push/pulling (eery README file.
+
+```
+├── .streamlit           
+│   └── config.toml        <- app setup configuration file
+├── divalgo                <- main folder with class and functions                      
+│   ├── .streamlit         <- app setup configuration file
+│   ├── pages              <- folder containing subpages for the streamlit app
+|   |   └── ...
+│   ├── demo.ipynb         <- jupyter notebook demonstrating the use of the class
+│   ├── divalgo_class.py   <- script with class and main functions 
+│   ├── utils.py           <- script with helper-functions for the class and app 
+│   └──🚪frontpage.py      <- main streamlit file and frontpage
+├── .gitignore                 
+├── synopsis.pdf           <- the synopsis for the project
+├── README.md              <- the top-level README
+└── requirements.txt       <- required packages
+```
