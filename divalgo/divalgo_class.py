@@ -90,7 +90,7 @@ class Evaluate:
         X_test, y_test, y_pred = feed
         self.model = model
         self.X_test = X_test 
-        self.y_test = y_test 
+        self.y_test = y_test
         self.y_pred = y_pred
         self.colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
     
