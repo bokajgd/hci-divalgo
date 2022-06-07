@@ -1,11 +1,12 @@
 import streamlit as st
-import divalgo_class  as div
+import divalgo_class as div
 import pandas as pd
 from sklearn.metrics import accuracy_score, confusion_matrix
 import plotly.figure_factory as ff
 import pickle
 import os
 import shutil
+
 
 colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
 st.set_page_config(page_title="DIVALGO", layout="wide")
@@ -17,6 +18,11 @@ def main(df, model):
     ##################
     # EMBEDDING PLOT #
     ##################
+
+    embedding_plot = div.embedding_plot(df)
+
+    st.bokeh_chart(embedding_plot)
+
 
 if __name__ == "__main__":
 

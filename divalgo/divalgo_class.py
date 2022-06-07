@@ -10,7 +10,7 @@ import numpy as np
 from bokeh.plotting import figure, show, output_notebook
 from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper, CustomJS, Circle
 
-from divalgo.utils import get_embeddings, prob_barplot, np_image_to_base64, get_embedding_df
+from utils import get_embeddings, prob_barplot, np_image_to_base64, get_embedding_df
 
 def accuracy_chart_type(confusion:tuple, 
                         labels =["True positive", "True negative", "False positive", "False negative"], 
@@ -162,9 +162,11 @@ class Evaluate:
         self.df = pd.DataFrame(self.X_test)
         self.df["y_test"] = self.y_test
         self.df["y_pred"] = self.y_pred
-        self.df["y_pred_probs"] = [probs for probs in self.y_pred_probs] 
         self.df["filename"] = self.filenames
 
+        df_2 = pd.DataFrame(self.y_pred_probs, columns=['prob0', 'prob1'])
+
+        self.df = pd.concat([self.df, df_2], axis=1)
 
     def open_visualization(self):
 
@@ -172,7 +174,7 @@ class Evaluate:
         self.df.to_csv(os.path.join("tmp", "data.csv"))
         pickle.dump(self.model, open(os.path.join("tmp", "model.pkl"), "wb"))
 
-        os.system(f'streamlit run {os.path.join("divalgo", "🚪frontpage.py")}')
+        os.system(f'streamlit run {os.path.join("🚪frontpage.py")}')
 
     def confusion(self):
         fig = confusion_mat(self.y_test, self.y_pred)

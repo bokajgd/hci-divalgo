@@ -173,13 +173,6 @@ df = pd.DataFrame({
         "pred_is_true": [str(preds[i] == category[i]) for i in range(len(preds))]
         })
 
-
-
-
-
-
-
-
 # Interactive plot
 
 datasource = ColumnDataSource(df)

@@ -85,13 +85,14 @@ def np_image_to_base64(im_matrix):
 # Function for generating df for plot
 def get_embedding_df(base_df, embeddings_2d, image_arrays):
     
+    pred_probs = base_df[['prob0', 'prob1']].to_numpy()
+
     df = pd.DataFrame({
             'x': [embeddings_2d[x][0] for x in range(len(embeddings_2d))],
             'y': [embeddings_2d[y][1] for y in range(len(embeddings_2d))],
             'file': base_df['filename'],
             'image': list(map(np_image_to_base64, image_arrays)),
-            'bar': list(map(prob_barplot, base_df['y_pred_probs'])),
-            'pred_probs': [probs for probs in base_df['y_pred_probs']],
+            'bar': list(map(prob_barplot, pred_probs)),
             'prediction': base_df['y_pred'],
             "category": base_df['y_test'],
             "pred_is_true": [str(base_df['y_pred'][i] == base_df['y_test'][i]) for i in range(len(base_df['y_pred']))]
