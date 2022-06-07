@@ -34,7 +34,7 @@ def main(df):
     st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
 
     with st.sidebar.container():
-        image = Image.open("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/logo.png")
+        image = Image.open("../logos/logo.png")
         st.image(image, use_column_width=True)
 
     st.markdown("# Model predictions")

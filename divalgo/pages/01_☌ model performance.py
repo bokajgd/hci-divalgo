@@ -16,7 +16,7 @@ def main(df, model):
     st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
 
     with st.sidebar.container():
-        image = Image.open("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/logo.png")
+        image = Image.open("..o/logos/logo.png")
         st.image(image, use_column_width=True)
 
     st.markdown("## Overall model performance")

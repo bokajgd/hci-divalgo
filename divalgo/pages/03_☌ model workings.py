@@ -1,5 +1,5 @@
 import streamlit as st
-import divalgo_class  as div
+import divalgo_class as div
 import pandas as pd
 from sklearn.metrics import accuracy_score, confusion_matrix
 import plotly.figure_factory as ff
@@ -8,14 +8,27 @@ import os
 import shutil
 from PIL import Image
 
+colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
+st.set_page_config(page_title="DIVALGO", layout="wide")
+
+
 def main(df, model):
     st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
 
     with st.sidebar.container():
-        image = Image.open("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/logo.png")
+        image = Image.open("../logos/logo.png")
         st.image(image, use_column_width=True)
 
-    print('Hi')
+    st.markdown("## Model Performance and Model Embeddings")
+    st.markdown("The interactive plot below lets you explore the model performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. Let you mouse hover over the data points to view the images.")
+    ##################
+    # EMBEDDING PLOT #
+    ##################
+
+    embedding_plot = div.embedding_plot(df)
+
+    st.bokeh_chart(embedding_plot)
+
 
 if __name__ == "__main__":
 

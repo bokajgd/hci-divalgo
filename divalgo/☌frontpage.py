@@ -14,7 +14,7 @@ def main(df, model):
     st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
 
     with st.sidebar.container():
-        image = Image.open("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/logo.png")
+        image = Image.open("../logos/logo.png")
         st.image(image, use_column_width=True) 
 
     r1c1, r1c2, r1c3 = st.columns([1.5,5,1.5])
@@ -23,7 +23,7 @@ def main(df, model):
         st.write(' ')
 
     with r1c2:
-        st.image("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/logo.png", use_column_width=True)
+        st.image("../logos/logo.png", use_column_width=True)
 
     with r1c3:
         st.write(' ')
@@ -33,13 +33,13 @@ def main(df, model):
     r2c1, r2c2, r2c3 , r2c4, r2c5 = st.columns([2,1,2,1,2])
 
     with r2c1:
-        st.image("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/circle.png", use_column_width=True)
+        st.image("../logos/circle.png", use_column_width=True)
 
     with r2c3:
-        st.image("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/circle.png", use_column_width=True)
+        st.image("../logos/circle.png", use_column_width=True)
 
     with r2c5:
-        st.image("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/circle.png", use_column_width=True)
+        st.image("../logos/circle.png", use_column_width=True)
 
         
 
