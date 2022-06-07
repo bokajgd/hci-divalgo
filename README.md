@@ -1,3 +1,9 @@
+
+<p align="center">
+    <img src="divalgo/logos/logo.png" alt="Logo" width="200" height="50">
+  </a>
+
+
 <br />
   <h1 align="center">Divalgo - An interactive tool for diagnosing and evaluating machine learning algorithms
  </h1>
@@ -62,6 +68,8 @@ This repository has the following structure:
 │   └── config.toml        <- app setup configuration file
 ├── divalgo                <- main folder with class and functions                      
 │   ├── .streamlit         <- app setup configuration file
+│   ├── logos              <- logo and symbols for pages
+|   |   └── ...
 │   ├── pages              <- folder containing subpages for the streamlit app
 |   |   └── ...
 │   ├── demo.ipynb         <- jupyter notebook demonstrating the use of the class
