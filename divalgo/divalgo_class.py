@@ -7,6 +7,10 @@ import plotly.figure_factory as ff
 import pandas as pd
 import pickle 
 import numpy as np
+from bokeh.plotting import figure, show, output_notebook
+from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper, CustomJS, Circle
+
+from divalgo.utils import get_embeddings, prob_barplot, np_image_to_base64, get_embedding_df
 
 def accuracy_chart_type(confusion:tuple, 
                         labels =["True positive", "True negative", "False positive", "False negative"], 
@@ -105,6 +109,40 @@ def confusion_mat(y_test, y_pred, colors):
     return fig
 
 
+# Defining function for interactive embedding plot
+def embedding_plot(df):
+
+    embeddings_2d, image_arrays = get_embeddings(df)
+
+    new_df = get_embedding_df(df, embeddings_2d, image_arrays)
+
+    s1 = ColumnDataSource(data=new_df)
+    color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
+
+    p1 = figure(plot_width=800, plot_height=800,
+                tools=('pan, wheel_zoom, reset, box_zoom'), 
+                title="UMAP projection of image embeddings")
+    p1.circle('x', 'y', source=s1, alpha=0.6, size = 10,
+            color=dict(field='pred_is_true', transform=color_mapping))
+
+    p1.add_tools(HoverTool(tooltips="""
+    <div>
+        <div class="column">
+            <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:175px;height:125px;'/>
+        <div>
+        <div class="column">
+            <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:175px;height:125px;'/>
+        <div>
+            <span style='font-size: 12px'> <strong> Predicted class: </strong> @prediction</span>
+        <div>
+            <span style='font-size: 12px'> <strong> True class: </strong>  @category </span>
+        </div>
+    </div>
+    """))
+
+    return p1
+
+
 ######################
 # DEFINING THE CLASS #
 ######################
@@ -120,16 +158,18 @@ class Evaluate:
         self.filenames = filenames
         self.y_pred_probs = self.model.predict_proba(self.X_test)
         self.colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
-    
+
+        self.df = pd.DataFrame(self.X_test)
+        self.df["y_test"] = self.y_test
+        self.df["y_pred"] = self.y_pred
+        self.df["y_pred_probs"] = [probs for probs in self.y_pred_probs] 
+        self.df["filename"] = self.filenames
+
+
     def open_visualization(self):
-        df = pd.DataFrame(self.X_test)
-        df["y_test"] = self.y_test
-        df["y_pred"] = self.y_pred
-        df["y_pred_probs"] = self.y_pred_probs
-        df["filename"] = self.filenames
 
         os.makedirs("tmp")
-        df.to_csv(os.path.join("tmp", "data.csv"))
+        self.df.to_csv(os.path.join("tmp", "data.csv"))
         pickle.dump(self.model, open(os.path.join("tmp", "model.pkl"), "wb"))
 
         os.system(f'streamlit run {os.path.join("divalgo", "🚪frontpage.py")}')
@@ -147,3 +187,7 @@ class Evaluate:
         tn, fp, fn, tp = confusion_matrix(self.y_test, self.y_pred).ravel()
         fig = accuracy_chart_type((tp, tn, fp, fn), labels, self.colors)
         fig.show()
+
+    def explore_embeddings(self):
+        p = embedding_plot(df=self.df)
+        show(p)

@@ -27,7 +27,27 @@ import bokeh.io
 import io
 import base64
 
+# Function for generating embeddings
+def get_embeddings(df):
+    # Create embeddings with pytorch
+    img2vec = Img2Vec()
 
+    image_arrays = []
+    vectors = []
+
+    for i, img in tqdm(enumerate(df['filename'])):
+        an_image = Image.open(img).resize((200, 150), Image.BICUBIC)
+        image_arrays.append(np.asarray(an_image).astype(np.uint8))
+        vectors.append(img2vec.get_vec(an_image, tensor=False))
+
+
+    # Project embeddings to 2D space with UMAP
+    embeddings = np.vstack(vectors)
+
+    reducer = umap.UMAP()
+    embeddings_2d = reducer.fit_transform(embeddings).tolist()
+
+    return embeddings_2d, image_arrays
 
 # Make function for making and saving bar plots
 def prob_barplot(probabilities: np.array):
@@ -62,4 +82,20 @@ def np_image_to_base64(im_matrix):
     return im_url
 
 
+# Function for generating df for plot
+def get_embedding_df(base_df, embeddings_2d, image_arrays):
+    
+    df = pd.DataFrame({
+            'x': [embeddings_2d[x][0] for x in range(len(embeddings_2d))],
+            'y': [embeddings_2d[y][1] for y in range(len(embeddings_2d))],
+            'file': base_df['filename'],
+            'image': list(map(np_image_to_base64, image_arrays)),
+            'bar': list(map(prob_barplot, base_df['y_pred_probs'])),
+            'pred_probs': [probs for probs in base_df['y_pred_probs']],
+            'prediction': base_df['y_pred'],
+            "category": base_df['y_test'],
+            "pred_is_true": [str(base_df['y_pred'][i] == base_df['y_test'][i]) for i in range(len(base_df['y_pred']))]
+            })
+
+    return df
 

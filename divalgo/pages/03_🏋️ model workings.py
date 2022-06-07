@@ -7,10 +7,16 @@ import pickle
 import os
 import shutil
 
+colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
+st.set_page_config(page_title="DIVALGO", layout="wide")
+
 
 def main(df, model):
-    
-    print('Hi')
+    st.markdown("## Model Performance and Model Embeddings")
+    st.markdown("The interactive plot below lets you explore the model performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. Let you mouse hover over the data points to view the images.")
+    ##################
+    # EMBEDDING PLOT #
+    ##################
 
 if __name__ == "__main__":
 
