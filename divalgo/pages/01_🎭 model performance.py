@@ -45,7 +45,7 @@ def main(df, model):
     # Confusion matrix #
     ####################
 
-    cm = div.confusion_mat(df["y_test"], df["y_pred"])
+    cm = div.confusion_mat(df["y_test"], df["y_pred"], colors[:4])
     cm.update_layout(
         margin=dict(
             l=10,

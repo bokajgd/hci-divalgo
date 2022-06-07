@@ -1,3 +1,71 @@
+from pickle import TRUE
 import streamlit as st
+import os
 
-st.write("Confusion matrix")
+def info_pred_type(prediction_type:str):
+    if prediction_type == "True predictions":
+        return 1, "classified"
+    if prediction_type == "False predictions":
+        return 0, "misclassified"
+
+def sample_image(df, error_class, prediction_type, class_list, n_images):
+    # Subset dataframe to match requirements by user
+    subset = df[df["y_test"]==error_class]
+    bool_pred, classification = info_pred_type(prediction_type)
+    subset = subset[subset["correct_prediction"]==bool_pred]
+    # Sample
+    sam = subset.sample(n_images)
+    images = list(sam["filename"])
+
+    # Strings to return
+    if bool_pred == 1:
+        other = error_class 
+    else:
+        other = class_list[class_list!=error_class][0]
+    
+    if error_class == "dog":
+        own = "dogs"
+    elif error_class == "wolf":
+        own = "wolves"
+    return images, classification, own, other
+
+def main(df):
+    st.markdown("# Model predictions")
+    
+    st.markdown("What is this page showing")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        class_list = df["y_test"].unique()
+        error_class = st.radio("Choose class", class_list)
+    with col2:
+        prediction_type = st.radio("Choose prediction type", ["True predictions", "False predictions"])
+
+    col3, _ = st.columns((4,1))
+    with col3:
+        n_images = st.slider("Choose how many images you want to see", 2, 8, 4, 2)
+
+    if "images" not in st.session_state or  "classification" not in st.session_state or  "other" not in st.session_state or "own" not in st.session_state:
+        images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
+        st.session_state["images"] = images
+        st.session_state["classification"] = classification
+        st.session_state["own"] = own
+        st.session_state["other"] = other
+
+    
+    click = st.button("Get new examples")    
+    if click:
+        images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
+        st.session_state["images"] = images
+        st.session_state["classification"] = classification
+        st.session_state["own"] = own
+        st.session_state["other"] = other
+    st.markdown(f'### These {st.session_state["own"]} were {st.session_state["classification"]} as {st.session_state["other"]}')
+    st.image(st.session_state["images"], width=300)
+
+
+if __name__ == "__main__":
+    df = st.session_state["data"]
+    True_false = df["y_test"] == df["y_pred"]
+    df["correct_prediction"] =  [1 if T else 0 for T in True_false]
+    main(df)
