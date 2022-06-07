@@ -1,5 +1,5 @@
 import streamlit as st
-import util as div
+import divalgo_class as div
 import pandas as pd
 from sklearn.metrics import accuracy_score, confusion_matrix
 import plotly.figure_factory as ff

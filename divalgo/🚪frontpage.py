@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import util as div
+import divalgo_class as div
 import sys
 import os
 import pickle
