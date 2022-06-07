@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img src="divalgo/logos/logo.png" alt="Logo" width="200" height="50">
+    <img src="divalgo/logos/logo.png" alt="Logo" width="500" height="200">
   </a>
 
 
@@ -64,10 +64,9 @@ After cloning the repo, creating the virtual environment you should be ready to 
 This repository has the following structure:
 
 ```
-├── .streamlit           
-│   └── config.toml        <- app setup configuration file
+├── .streamlit             <- folder with app setup configuration file
 ├── divalgo                <- main folder with class and functions                      
-│   ├── .streamlit         <- app setup configuration file
+│   ├── .streamlit         <- folder with app setup configuration file
 │   ├── logos              <- logo and symbols for pages
 |   |   └── ...
 │   ├── pages              <- folder containing subpages for the streamlit app
