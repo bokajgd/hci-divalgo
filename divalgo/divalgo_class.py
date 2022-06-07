@@ -2,6 +2,7 @@ import os
 import streamlit as st
 from sklearn.base import is_classifier, is_regressor
 from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.linear_model import LogisticRegression
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import pandas as pd
@@ -125,14 +126,14 @@ class Evaluate:
         df = pd.DataFrame(self.X_test)
         df["y_test"] = self.y_test
         df["y_pred"] = self.y_pred
-        df["y_pred_probs"] = self.y_pred_probs
+        df["y_pred_probs"] = [probs for probs in self.y_pred_probs]
         df["filename"] = self.filenames
 
         os.makedirs("tmp")
         df.to_csv(os.path.join("tmp", "data.csv"))
         pickle.dump(self.model, open(os.path.join("tmp", "model.pkl"), "wb"))
 
-        os.system(f'streamlit run {os.path.join("divalgo", "🚪frontpage.py")}')
+        os.system(f'streamlit run {os.path.join("divalgo", "☌frontpage.py")}')
 
     def confusion(self):
         fig = confusion_mat(self.y_test, self.y_pred)

@@ -6,18 +6,25 @@ import plotly.figure_factory as ff
 import pickle
 import os
 import shutil
-
+from PIL import Image
 
 colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
 st.set_page_config(page_title="DIVALGO", layout="wide")
 
 
 def main(df, model):
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
+
+    with st.sidebar.container():
+        image = Image.open("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/logo.png")
+        st.image(image, use_column_width=True)
+
     st.markdown("## Overall model performance")
     st.markdown("Below is accuracy visualized, along with the possibility of splitting by type. This allows you to investigate whether your model is consistently better at predicting one class than another")
     ############
     # ACCURACY #
     ############
+
     acc = accuracy_score(df["y_test"], df["y_pred"])
     if "acc_by_type" not in st.session_state:
         st.session_state["acc_by_type"]=None

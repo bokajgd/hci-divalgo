@@ -6,10 +6,15 @@ import plotly.figure_factory as ff
 import pickle
 import os
 import shutil
-
+from PIL import Image
 
 def main(df, model):
-    
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
+
+    with st.sidebar.container():
+        image = Image.open("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/logo.png")
+        st.image(image, use_column_width=True)
+
     print('Hi')
 
 if __name__ == "__main__":

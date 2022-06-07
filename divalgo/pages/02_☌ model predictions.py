@@ -1,6 +1,7 @@
 from pickle import TRUE
 import streamlit as st
 import os
+from PIL import Image 
 
 def info_pred_type(prediction_type:str):
     if prediction_type == "True predictions":
@@ -30,6 +31,12 @@ def sample_image(df, error_class, prediction_type, class_list, n_images):
     return images, classification, own, other
 
 def main(df):
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
+
+    with st.sidebar.container():
+        image = Image.open("/Users/au617011/Documents/Semester8/HCI//hci-divalgo/divalgo/logos/logo.png")
+        st.image(image, use_column_width=True)
+
     st.markdown("# Model predictions")
     
     st.markdown("What is this page showing")
