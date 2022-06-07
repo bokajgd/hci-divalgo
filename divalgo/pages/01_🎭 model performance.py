@@ -1,5 +1,5 @@
 import streamlit as st
-import util as div
+import divalgo_class as div
 import pandas as pd
 from sklearn.metrics import accuracy_score, confusion_matrix
 import plotly.figure_factory as ff
@@ -24,7 +24,7 @@ def main(df, model):
     
     col1, col2 = st.columns(2)
     with col1:
-        acc_by_type = st.checkbox("Split by type")
+        acc_by_type = st.checkbox("Split pie by type")
         st.session_state["acc_by_type"]=acc_by_type 
     
     if not st.session_state["acc_by_type"]:
@@ -35,10 +35,10 @@ def main(df, model):
     accuracy_chart.update_layout(
         margin=dict(
             l=10,
-            r=10,
-            b=50,
-            t=10,
-            pad=4
+            r=60,
+            b=80,
+            t=2,
+            # pad=4
         )
     )
     ####################
@@ -50,19 +50,18 @@ def main(df, model):
         margin=dict(
             l=10,
             r=10,
-            b=50,
-            t=50,
-            pad=4
+            b=80,
+            t=5,
+            # pad=4
         )
     )
 
-    
-    with col1:
+    col3, col4 = st.columns(2)
+    with col3:
         st.plotly_chart(accuracy_chart, use_container_width=True)
 
-    with col2:
-        if st.checkbox("Show confusion matrix"):
-            st.plotly_chart(cm, use_container_width=True)
+    with col4:
+        st.plotly_chart(cm, use_container_width=True)
     with st.expander("Help"):
         st.markdown("""Accuracy of model tells you the percentage of true predictions. An accuracy of 70% thus means that the model \
             predicts the correct label in 70% of the cases. 
