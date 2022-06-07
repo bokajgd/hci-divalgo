@@ -5,3 +5,7 @@ plotly
 sklearn 
 os
 bokeh==2.4.1
+umap-learn
+seaborn
+opencv-python
+img2vec_pytorch
