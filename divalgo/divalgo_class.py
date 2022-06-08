@@ -151,12 +151,12 @@ def embedding_plot(df, size, new_df=None):
 class Evaluate:
     def __init__(self, feed, model):
         assert is_classifier(model) or is_regressor(model), "Please input an sklearn model"
-        X_test, y_test, y_pred, filenames = feed
+        X_test, y_test, filenames = feed
         self.model = model
         self.X_test = X_test 
         self.y_test = y_test
-        self.y_pred = y_pred
         self.filenames = filenames
+        self.y_pred = model.predict(X_test)
         self.y_pred_probs = self.model.predict_proba(self.X_test)
         self.colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
 
