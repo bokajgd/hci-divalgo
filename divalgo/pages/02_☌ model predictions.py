@@ -28,7 +28,7 @@ def sample_image(df, error_class, prediction_type, class_list, n_images):
     
     if error_class == "dog":
         own = "dogs"
-    elif error_class == "dolf":
+    elif error_class == "wolf":
         own = "wolves"
     return images, classification, own, other
 

@@ -136,14 +136,18 @@ def confusion_mat(y_test, y_pred, colors):
 
 
 # Defining function for interactive embedding plot
-def embedding_plot(df, size, new_df=None):
+def embedding_plot(df, size, colour=False, new_df=None):
 
     if not isinstance(new_df, pd.DataFrame): 
         embeddings_2d, image_arrays = get_embeddings(df)
         new_df = get_embedding_df(df, embeddings_2d, image_arrays)
     
     s1 = ColumnDataSource(data=new_df)
-    color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
+    
+    if colour:
+        color_mapping_dw = CategoricalColorMapper(factors=["dog", "wolf"], palette=["#8B959A", "#FECEA8"])
+    else:
+        color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
     
     p1 = figure(plot_width=800, plot_height=700,
                 tools=('pan, wheel_zoom, reset, box_zoom'), 
@@ -154,8 +158,21 @@ def embedding_plot(df, size, new_df=None):
     p1.yaxis.major_label_text_font_size = "10pt"
     p1.yaxis.major_label_text_color = '#928374'
 
-    p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
-            color=dict(field='pred_is_true', transform=color_mapping))
+    if colour:
+        p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
+        color=dict(field='category', transform=color_mapping_dw))
+
+    else:
+        p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
+        color=dict(field='pred_is_true', transform=color_mapping), legend='pred_is_true')
+        p1.legend.location = "bottom_left"
+        p1.legend.label_text_font = "tahoma"
+        p1.legend.orientation = "horizontal"
+        p1.legend.label_text_color = "#8B959A"
+        p1.legend.background_fill_color = "#1D2427"
+        p1.legend.background_fill_alpha = 0.7
+        
+
 
     p1.add_tools(HoverTool(tooltips="""
     <div>
@@ -218,11 +235,12 @@ def roc_curve_plot(y_test, y_pred_probs):
     return fig
 
 # Function for plotting coefficients
-def coef_heatmaps(model, absolute=False):
+def coef_heatmaps(model, absolute=False, height=240):
     
     if absolute:
         coefs = abs(model.coef_)
-    coefs = model.coef_
+    else:
+        coefs = model.coef_
     dim = int(math.sqrt(coefs.shape[1]))
     n_classes = coefs.shape[0]
     rows = n_classes
@@ -234,7 +252,7 @@ def coef_heatmaps(model, absolute=False):
 
         fig.update_xaxes(showticklabels=False) # Hide x axis ticks 
         fig.update_yaxes(showticklabels=False) # Hide y axis ticks
-        fig.update_layout(width=400, height=400,coloraxis=dict(colorscale=[(0.00, "#8B959A"),   (1, "#FECEA8")]), coloraxis_colorbar_thickness=5, showlegend=False)
+        fig.update_layout(width=400, height=height,coloraxis=dict(colorscale=[(0.00, "#8B959A"),   (1, "#FECEA8")]), coloraxis_colorbar_thickness=5, showlegend=False)
 
     return fig
 

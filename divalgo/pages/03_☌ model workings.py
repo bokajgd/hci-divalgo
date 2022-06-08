@@ -37,25 +37,30 @@ def main(df, model):
     ##################
     col1, _, col2, col3 = st.columns((1.5,0.4,1.1,1))
     
+    with col1:
+        point_size = st.slider('Choose size of points on slider', 0, 50, 10, 5)
+
     with col2: 
         empty = '<p <br> </p>'
         st.markdown(empty, unsafe_allow_html=True)  
         color_emb_plt = st.checkbox("Colour by class")
         st.session_state["color_emb_plt"]=color_emb_plt 
-    
-    with col1:
-        point_size = st.slider('Choose size of points on slider', 0, 50, 10, 5)
-
 
     col4, col5 = st.columns((3,1))
     with col4:
         if not "embeddings" in st.session_state:
-            embedding_plot, embeddings = div.embedding_plot(df, size=point_size)
-            st.session_state["embeddings"] = embeddings
+            if not st.session_state["color_emb_plt"]:
+                embedding_plot, embeddings = div.embedding_plot(df,size=point_size)
+                st.session_state["embeddings"] = embeddings
+            else:
+                embedding_plot, embeddings = div.embedding_plot(df, colour=True, size=point_size)
+                st.session_state["embeddings"] = embeddings
         else:
-            embedding_plot, embeddings = div.embedding_plot(df, 
-                                                            size=point_size, 
-                                                            new_df=st.session_state["embeddings"])
+            if not st.session_state["color_emb_plt"]:
+                embedding_plot, embeddings = div.embedding_plot(df,size=point_size)
+            else:
+                embedding_plot, embeddings = div.embedding_plot(df, colour=True, size=point_size)
+
         doc = curdoc()
         doc.theme = Theme(filename='custom.yaml')
         doc.add_root(embedding_plot)
@@ -64,21 +69,42 @@ def main(df, model):
     with col5:
         heatmap_title = '<p style="font-family:Tahoma; color:#928374; font-size: 20px;"> Coefficient Heatmaps</p>'
         st.markdown(heatmap_title, unsafe_allow_html=True)   
-        coef_intro = '''<p style="font-family:Tahoma; font-size: 12px;" >The plot below shows a heatmap of the model coefficients rearranged into the 
+        coef_intro = '''<p style="font-family:Tahoma; font-size: 13px;" >The plot below shows a heatmap of the model coefficients rearranged into the 
         same shape as the training images were transformed into (50x50 pixels). Positive values indicate coefficients that push image prediction toward 
         the class 'dog'. Negative values co indicate coefficients that push image prediction toward the class 'wolf'. </p>'''
-        st.markdown(coef_intro, unsafe_allow_html=True)
+
+        with st.expander('What does this show?'):
+            st.markdown(coef_intro, unsafe_allow_html=True)
+
         coef_heatmaps = div.coef_heatmaps(model)
         coef_heatmaps.update_layout(
             margin=dict(
                 l=5,
                 r=5,
-                b=50,
-                t=50,
+                b=4,
+                t=15,
                 # pad=4
             )
         )
         st.plotly_chart(coef_heatmaps, use_container_width=True)
+
+        abs_intro = '''<p style="font-family:Tahoma; font-size: 13px;" >The plot below shows a heatmap of the absolute 
+        magnitude of the coefficient. Thus, higher values indicate pixels with higher influence on the predictions. </p>'''
+        with st.expander('What does this show?'):
+            st.markdown(abs_intro, unsafe_allow_html=True)
+
+        abs_heatmaps = div.coef_heatmaps(model, absolute=True)
+        abs_heatmaps.update_layout(
+            margin=dict(
+                l=5,
+                r=5,
+                b=4,
+                t=15,
+                # pad=4
+            )
+        )
+        st.plotly_chart(abs_heatmaps, use_container_width=True)
+
 
 
 if __name__ == "__main__":

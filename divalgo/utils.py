@@ -55,7 +55,7 @@ def prob_barplot(probabilities: np.array):
     s = io.BytesIO()
 
     plt.figure()
-    ax = sns.barplot(x=['Wolf', 'Dog'], y=probabilities*100, 
+    ax = sns.barplot(x=['Dog', 'Wolf'], y=probabilities*100, 
     palette=['#8B959A', '#FECEA8'] )
     ax.tick_params(axis="y",which="major",labelsize=12,color="#2A363B")
     ax.tick_params(axis="x", which="major", labelsize=18, color="#2A363B")
