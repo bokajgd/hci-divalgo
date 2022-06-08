@@ -1,10 +1,11 @@
 import os
 import streamlit as st
 from sklearn.base import is_classifier, is_regressor
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import confusion_matrix, accuracy_score, roc_curve, auc
 from sklearn.linear_model import LogisticRegression
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
+import plotly.express as px
 import pandas as pd
 import pickle 
 import numpy as np
@@ -121,6 +122,8 @@ def confusion_mat(y_test, y_pred, colors):
     return fig
 
 
+
+
 # Defining function for interactive embedding plot
 def embedding_plot(df, size, new_df=None):
 
@@ -155,6 +158,39 @@ def embedding_plot(df, size, new_df=None):
     return p1, new_df
 
 
+
+def roc_curve_plot(y_test, y_pred_probs):
+    fpr, tpr, thresholds = roc_curve(y_test, y_pred_probs, pos_label=np.unique(y_test)[1])
+
+    fig = px.area(
+        x=fpr, y=tpr,
+        labels=dict(x='False Positive Rate', y='True Positive Rate'),
+        width=700, height=500,
+        color_discrete_sequence=['#FECEA8']
+        
+    )
+    fig.add_shape(
+        type='line', line=dict(dash='dash'), line_color='#1D2427',
+        x0=0, x1=1, y0=0, y1=1
+    )
+
+    fig.add_annotation(
+            text = f'AUC={auc(fpr, tpr):.4f}',
+            x=0.85, y=0.1, showarrow=False
+        )
+    fig.update_annotations(bgcolor='#1D2427', font_color='#8B959A')
+    fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)', 
+                        'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+                        'font_color': '#8B959A',
+                        #'title_text': f'ROC Curve (AUC={auc(fpr, tpr):.4f})',
+                        'title_font_color': '#8B959A'})
+
+    fig.update_yaxes(scaleanchor="x", scaleratio=1, showgrid=False)
+    fig.update_xaxes(constrain='domain', showgrid=False)
+
+    return fig
+
+
 ######################
 # DEFINING THE CLASS #
 ######################
@@ -181,8 +217,8 @@ class Evaluate:
         self.df = pd.concat([self.df, df_2], axis=1)
 
     def open_visualization(self):
-
-        os.makedirs("tmp")
+        if not os.path.exists("tmp"):
+            os.makedirs("tmp")
         self.df.to_csv(os.path.join("tmp", "data.csv"))
         pickle.dump(self.model, open(os.path.join("tmp", "model.pkl"), "wb"))
 
@@ -205,3 +241,7 @@ class Evaluate:
     def explore_embeddings(self):
         p = embedding_plot(df=self.df, size = 10)
         show(p)
+    
+    def plot_roc_curve(self):
+        fig = roc_curve_plot(self.y_test, self.y_pred_probs[:, 1])
+        fig.show()

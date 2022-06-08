@@ -48,9 +48,9 @@ def main(df):
     with col2:
         prediction_type = st.radio("Choose prediction type", ["True predictions", "False predictions"])
 
-    col3, _ = st.columns((4,1))
+    col3, _ = st.columns((3,1))
     with col3:
-        n_images = st.slider("Choose how many images you want to see", 2, 8, 4, 2)
+        n_images = st.slider("Choose how many images you want to see", 3, 12, 6, 3)
 
     if "images" not in st.session_state or  "classification" not in st.session_state or  "other" not in st.session_state or "own" not in st.session_state:
         images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
