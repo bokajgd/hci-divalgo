@@ -37,10 +37,14 @@ def main(df):
         image = Image.open(os.path.join("logos", "trans_logo.png"))
         st.image(image, use_column_width=True)
 
-    page_title = '<p style="font-family:Tahoma; text-align:center; font-size: 50px;"> Explore Model Predictions</p>'
+    page_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 52px;"> Explore Model Predictions</p>'
     st.markdown(page_title, unsafe_allow_html=True)    
-    st.markdown("What is this page showing")
-
+    page_intro = '''<p style="font-family:Tahoma; font-size: 15px;" >This page lets you explore the test data 
+    in relation to the decisions made by the model. Choose whether you want to see true predictions or false predictions
+    from either one of the categories using the instruments below. <br>
+    _________________________________________________________________________________________________________________</p>'''
+    st.markdown(page_intro, unsafe_allow_html=True)
+    
     col1, col2 = st.columns(2)
     with col1:
         class_list = df["y_test"].unique()
@@ -67,7 +71,8 @@ def main(df):
         st.session_state["classification"] = classification
         st.session_state["own"] = own
         st.session_state["other"] = other
-    st.markdown(f'### These {st.session_state["own"]} were {st.session_state["classification"]} as {st.session_state["other"]}')
+    class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {st.session_state["own"]} were {st.session_state["classification"]} as {st.session_state["other"]}</p>'
+    st.markdown(class_str, unsafe_allow_html=True)
     st.image(st.session_state["images"], width=300)
 
 

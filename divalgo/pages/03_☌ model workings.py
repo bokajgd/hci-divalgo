@@ -1,3 +1,4 @@
+from pydoc import pager
 import streamlit as st
 import divalgo_class as div
 import pandas as pd
@@ -8,6 +9,7 @@ import os
 import shutil
 from PIL import Image
 from bokeh.io import curdoc
+from bokeh.themes import Theme
 from bokeh.themes import built_in_themes
 
 colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
@@ -21,9 +23,11 @@ def main(df, model):
         image = Image.open(os.path.join("logos", "trans_logo.png"))
         st.image(image, use_column_width=True)
 
-    page_title = '<p style="font-family:Tahoma; text-align:center; font-size: 50px;">Coeffecients and Embeddings</p>'
+    page_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 52px;">Coeffecients and Embeddings</p>'
     st.markdown(page_title, unsafe_allow_html=True)
-    st.markdown("The interactive plot below lets you explore the model performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. Let you mouse hover over the data points to view the images.")
+    page_intro = '<p style="font-family:Tahoma; font-size: 15px;" >The interactive plot below lets you explore the model performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. Let you mouse hover over the data points to view the images.</p>'
+    st.markdown(page_intro, unsafe_allow_html=True)
+
     ##################
     # EMBEDDING PLOT #
     ##################
@@ -37,7 +41,7 @@ def main(df, model):
                                                         size=point_size, 
                                                         new_df=st.session_state["embeddings"])
     doc = curdoc()
-    doc.theme = 'dark_minimal'
+    doc.theme = Theme(filename='custom.yaml')
     doc.add_root(embedding_plot)
     st.bokeh_chart(embedding_plot, use_container_width=True)
 

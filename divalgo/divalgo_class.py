@@ -34,7 +34,7 @@ def accuracy_chart_type(confusion:tuple,
                      sort=False,
                      direction="clockwise")]
     )
-    fig.update_traces(textposition='inside', textinfo='percent+label', marker = dict(colors = colors), textfont_size=18)
+    fig.update_traces(textposition='inside', textinfo='percent+label', marker = dict(colors = colors), textfont_size=16)
     fig.update_layout(showlegend=False, font_family="Tahoma")
     
     return fig
@@ -59,7 +59,7 @@ def accuracy_chart(accuracy,
 
     fig = go.FigureWidget()
     fig.add_pie(values=df["Value"], labels=df["Type"], marker = dict(colors=colors))
-    fig.update_traces(textposition='inside', textinfo='percent+label', textfont_size=18)
+    fig.update_traces(textposition='inside', textinfo='percent+label', textfont_size=16)
     fig.update_layout(showlegend=False,
                       font_family="Tahoma")
     
@@ -106,18 +106,27 @@ def confusion_mat(y_test, y_pred, colors):
                                       annotation_text=z_text, 
                                       colorscale=mycolors
                                       )
-    
+    fig.update_yaxes(tickangle=270)
+
     fig.layout.update(
         go.Layout(
             autosize=False,
             font=dict(
             family="Tahoma",
-            size = 14
+            size = 16
+            ),
+            xaxis=dict(
+            domain=[0.05,1],
+            position=0.99
+            ),
+            yaxis=dict(
+            domain=[0,0.95],
+            position=0.01
             )
         )
         )
 
-    fig.update_layout(width=400, height=440)
+    fig.update_layout(width=400, height=450)
     
     return fig
 
@@ -136,21 +145,27 @@ def embedding_plot(df, size, new_df=None):
     
     p1 = figure(plot_width=800, plot_height=800,
                 tools=('pan, wheel_zoom, reset, box_zoom'), 
-                title="UMAP projection of image embeddings")
+                title="UMAP Projection of Image Embeddings")
+    p1.title.text_font_size = '18pt'
+    p1.xaxis.major_label_text_font_size = "10pt"
+    p1.xaxis.major_label_text_color = '#928374'
+    p1.yaxis.major_label_text_font_size = "10pt"
+    p1.yaxis.major_label_text_color = '#928374'
+
     p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
             color=dict(field='pred_is_true', transform=color_mapping))
 
     p1.add_tools(HoverTool(tooltips="""
     <div>
         <div class="column">
-            <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:175px;height:125px;'/>
+            <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
         <div>
         <div class="column">
-            <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:175px;height:125px;'/>
+            <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200;'/>
         <div>
-            <span style='font-size: 12px'> <strong> Predicted class: </strong> @prediction</span>
+            <span style='font-family:Tahoma; color:#8B959Afont-size: 14px'> <strong> Predicted class: </strong> @prediction</span>
         <div>
-            <span style='font-size: 12px'> <strong> True class: </strong>  @category </span>
+            <span style='font-family:Tahoma; color:#8B959A font-size:14px'> <strong> True class: </strong>  @category </span>
         </div>
     </div>
     """))
@@ -165,7 +180,7 @@ def roc_curve_plot(y_test, y_pred_probs):
     fig = px.area(
         x=fpr, y=tpr,
         labels=dict(x='False Positive Rate', y='True Positive Rate'),
-        width=700, height=500,
+        width=540, height=440,
         color_discrete_sequence=['#FECEA8']
         
     )
@@ -179,6 +194,16 @@ def roc_curve_plot(y_test, y_pred_probs):
             x=0.85, y=0.1, showarrow=False
         )
     fig.update_annotations(bgcolor='#1D2427', font_color='#8B959A')
+
+    fig.update_layout(
+        font_color="#8B959A",
+        font=dict(
+            family="Tahoma",
+            size=14,
+            color="#8B959A"
+        )
+    )
+
     fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)', 
                         'paper_bgcolor': 'rgba(0, 0, 0, 0)',
                         'font_color': '#8B959A',
