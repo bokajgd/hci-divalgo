@@ -69,6 +69,16 @@ def main(df, model):
 
     with col4:
         st.plotly_chart(cm, use_container_width=True)
+
+
+    roc = div.roc_curve_plot(df["y_test"], df["prob1"])
+
+    col5, col6 = st.columns(2)
+    with col5:
+        st.plotly_chart(roc, use_container_width=True)
+
+
+    
     with st.expander("Help"):
         st.markdown("""Accuracy of model tells you the percentage of true predictions. An accuracy of 70% thus means that the model \
             predicts the correct label in 70% of the cases. 
