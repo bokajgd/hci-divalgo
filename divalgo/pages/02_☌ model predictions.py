@@ -37,8 +37,8 @@ def main(df):
         image = Image.open(os.path.join("logos", "trans_logo.png"))
         st.image(image, use_column_width=True)
 
-    st.markdown("# Model predictions")
-    
+    page_title = '<p style="font-family:Tahoma; text-align:center; font-size: 50px;"> Explore Model Predictions</p>'
+    st.markdown(page_title, unsafe_allow_html=True)    
     st.markdown("What is this page showing")
 
     col1, col2 = st.columns(2)
