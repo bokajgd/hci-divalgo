@@ -34,7 +34,7 @@ def accuracy_chart_type(confusion:tuple,
                      direction="clockwise")]
     )
     fig.update_traces(textposition='inside', textinfo='percent+label', marker = dict(colors = colors), textfont_size=18)
-    fig.update_layout(showlegend=False, font_family="Times New Roman")
+    fig.update_layout(showlegend=False, font_family="Tahoma")
     
     return fig
 
@@ -58,9 +58,9 @@ def accuracy_chart(accuracy,
 
     fig = go.FigureWidget()
     fig.add_pie(values=df["Value"], labels=df["Type"], marker = dict(colors=colors))
-    fig.update_traces(textposition='inside', textinfo='percent+label', textfont_size=20)
+    fig.update_traces(textposition='inside', textinfo='percent+label', textfont_size=18)
     fig.update_layout(showlegend=False,
-                      font_family="Times New Roman")
+                      font_family="Tahoma")
     
     return fig
 
@@ -96,16 +96,27 @@ def confusion_mat(y_test, y_pred, colors):
             [1, color3]]
 
 
-    labels=["Dogs", "Wolfs"] # How to know what to use here????
+    labelsx=["Actual Dogs", "Actual Wolfs"] 
+    labelsy=["Predicted Dogs", "Predicted Wolfs"] 
     z_text = z_text = [[str(y) for y in x] for x in matrix]
     fig = ff.create_annotated_heatmap(matrix, 
-                                      x=labels, 
-                                      y=labels, 
+                                      x=labelsx, 
+                                      y=labelsy, 
                                       annotation_text=z_text, 
                                       colorscale=mycolors
                                       )
+    
+    fig.layout.update(
+        go.Layout(
+            autosize=False,
+            font=dict(
+            family="Tahoma",
+            size = 14
+            )
+        )
+        )
 
-    fig.update_layout(width=400, height=400)
+    fig.update_layout(width=400, height=440)
     
     return fig
 
