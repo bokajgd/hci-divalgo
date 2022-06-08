@@ -26,9 +26,14 @@ def main(df, model):
     ##################
 
     point_size = st.slider('Size of points', 0, 50, 10, 5)
+    if not "embeddings" in st.session_state:
+        embedding_plot, embeddings = div.embedding_plot(df, size=point_size)
+        st.session_state["embeddings"] = embeddings
+    else:
+        embedding_plot, embeddings = div.embedding_plot(df, 
+                                                        size=point_size, 
+                                                        new_df=st.session_state["embeddings"])
 
-    embedding_plot = div.embedding_plot(df, size=point_size)
-    
     st.bokeh_chart(embedding_plot, use_container_width=True)
 
 

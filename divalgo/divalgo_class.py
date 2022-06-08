@@ -113,12 +113,12 @@ def confusion_mat(y_test, y_pred, colors):
 
 
 # Defining function for interactive embedding plot
-def embedding_plot(df, size):
+def embedding_plot(df, size, new_df=None):
 
-    embeddings_2d, image_arrays = get_embeddings(df)
-
-    new_df = get_embedding_df(df, embeddings_2d, image_arrays)
-
+    if not isinstance(new_df, pd.DataFrame): 
+        embeddings_2d, image_arrays = get_embeddings(df)
+        new_df = get_embedding_df(df, embeddings_2d, image_arrays)
+    
     s1 = ColumnDataSource(data=new_df)
     color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
     
@@ -145,7 +145,7 @@ def embedding_plot(df, size):
     </div>
     """))
 
-    return p1
+    return p1, new_df
 
 
 ######################
