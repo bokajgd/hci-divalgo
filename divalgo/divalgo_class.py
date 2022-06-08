@@ -156,18 +156,28 @@ def embedding_plot(df, size, new_df=None):
             color=dict(field='pred_is_true', transform=color_mapping))
 
     p1.add_tools(HoverTool(tooltips="""
-    <div>
-        <div class="column">
-            <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
+    <html>
+            <style>
+                    style1 {
+                        font-size:100%;
+                        font-family:tahoma;
+                        color:#FF0000;
+                    }
+                    }
+            </style>
         <div>
-        <div class="column">
-            <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200;'/>
-        <div>
-            <span style='font-family:Tahoma; color:#8B959Afont-size: 14px'> <strong> Predicted class: </strong> @prediction</span>
-        <div>
-            <span style='font-family:Tahoma; color:#8B959A font-size:14px'> <strong> True class: </strong>  @category </span>
+            <div class="column">
+                <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
+            <div>
+            <div class="column">
+                <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
+            <div>
+                <span class='bold'> Predicted class: </span> @prediction
+            <div>
+                <span class='bold'> True class: </span> @category
+            </div>
         </div>
-    </div>
+    </html>
     """))
 
     return p1, new_df

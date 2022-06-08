@@ -23,9 +23,9 @@ def main(df, model):
         image = Image.open(os.path.join("logos", "trans_logo.png"))
         st.image(image, use_column_width=True)
 
-    page_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 52px;">Coeffecients and Embeddings</p>'
+    page_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 52px;">Coefficients and Embeddings</p>'
     st.markdown(page_title, unsafe_allow_html=True)
-    page_intro = '<p style="font-family:Tahoma; font-size: 15px;" >The interactive plot below lets you explore the model performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. Let you mouse hover over the data points to view the images.</p>'
+    page_intro = '<p style="font-family:Tahoma; font-size: 15px;" >The interactive plot below lets you explore the model performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. Let your mouse hover over the data points to view the images.</p>'
     st.markdown(page_intro, unsafe_allow_html=True)
 
     ##################
