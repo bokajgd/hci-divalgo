@@ -6,9 +6,11 @@ from sklearn.linear_model import LogisticRegression
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import plotly.express as px
+from plotly.subplots import make_subplots
 import pandas as pd
 import pickle 
 import numpy as np
+import math
 from bokeh.plotting import figure, show, output_notebook
 from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper, CustomJS, Circle
 
@@ -143,10 +145,10 @@ def embedding_plot(df, size, new_df=None):
     s1 = ColumnDataSource(data=new_df)
     color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
     
-    p1 = figure(plot_width=800, plot_height=800,
+    p1 = figure(plot_width=800, plot_height=700,
                 tools=('pan, wheel_zoom, reset, box_zoom'), 
                 title="UMAP Projection of Image Embeddings")
-    p1.title.text_font_size = '18pt'
+    p1.title.text_font_size = '14pt'
     p1.xaxis.major_label_text_font_size = "10pt"
     p1.xaxis.major_label_text_color = '#928374'
     p1.yaxis.major_label_text_font_size = "10pt"
@@ -156,28 +158,18 @@ def embedding_plot(df, size, new_df=None):
             color=dict(field='pred_is_true', transform=color_mapping))
 
     p1.add_tools(HoverTool(tooltips="""
-    <html>
-            <style>
-                    style1 {
-                        font-size:100%;
-                        font-family:tahoma;
-                        color:#FF0000;
-                    }
-                    }
-            </style>
+    <div>
+        <div class="column">
+            <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
         <div>
-            <div class="column">
-                <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
-            <div>
-            <div class="column">
-                <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
-            <div>
-                <span class='bold'> Predicted class: </span> @prediction
-            <div>
-                <span class='bold'> True class: </span> @category
-            </div>
+        <div class="column">
+            <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
+        <div>
+            <span> <strong> Predicted class: </strong> @prediction</span>
+        <div>
+            <span> <strong> True class: </strong>  @category </span>
         </div>
-    </html>
+    </div>
     """))
 
     return p1, new_df
@@ -225,6 +217,28 @@ def roc_curve_plot(y_test, y_pred_probs):
 
     return fig
 
+# Function for plotting coefficients
+def coef_heatmaps(model, absolute=False):
+    
+    if absolute:
+        coefs = abs(model.coef_)
+    coefs = model.coef_
+    dim = int(math.sqrt(coefs.shape[1]))
+    n_classes = coefs.shape[0]
+    rows = n_classes
+
+    fig = make_subplots(rows, 1, vertical_spacing=0.08)
+    for i in range(n_classes):
+        fig.add_trace(go.Heatmap(z=coefs[i].reshape(dim, dim),coloraxis='coloraxis1'), i+1, 1)
+        #fig.update_layout(coloraxis_showscale=False, )
+
+        fig.update_xaxes(showticklabels=False) # Hide x axis ticks 
+        fig.update_yaxes(showticklabels=False) # Hide y axis ticks
+        fig.update_layout(width=400, height=400,coloraxis=dict(colorscale=[(0.00, "#8B959A"),   (1, "#FECEA8")]), coloraxis_colorbar_thickness=5, showlegend=False)
+
+    return fig
+
+    
 
 ######################
 # DEFINING THE CLASS #
@@ -279,4 +293,8 @@ class Evaluate:
     
     def plot_roc_curve(self):
         fig = roc_curve_plot(self.y_test, self.y_pred_probs[:, 1])
+        fig.show()
+
+    def plot_coefs(self):
+        fig = coef_heatmaps(self.model)
         fig.show()

@@ -10,6 +10,8 @@ def info_pred_type(prediction_type:str):
         return 0, "misclassified"
 
 def sample_image(df, error_class, prediction_type, class_list, n_images):
+    class_list = [i.lower() for i in class_list]
+    error_class = error_class.lower()
     # Subset dataframe to match requirements by user
     subset = df[df["y_test"]==error_class]
     bool_pred, classification = info_pred_type(prediction_type)
@@ -26,7 +28,7 @@ def sample_image(df, error_class, prediction_type, class_list, n_images):
     
     if error_class == "dog":
         own = "dogs"
-    elif error_class == "wolf":
+    elif error_class == "dolf":
         own = "wolves"
     return images, classification, own, other
 
@@ -48,11 +50,12 @@ def main(df):
     col1, col2 = st.columns(2)
     with col1:
         class_list = df["y_test"].unique()
+        class_list = [i.capitalize() for i in class_list]
         error_class = st.radio("Choose class", class_list)
     with col2:
         prediction_type = st.radio("Choose prediction type", ["True predictions", "False predictions"])
 
-    col3, _ = st.columns((3,1))
+    col3, col4 = st.columns((2.3,1))
     with col3:
         n_images = st.slider("Choose how many images you want to see", 3, 12, 6, 3)
 

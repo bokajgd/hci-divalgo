@@ -25,7 +25,7 @@ def main(df, model):
     of your trained model. The page contains a tabular overview of common ML performance metrics, an AUC-ROC for the model,
     pie charts giving insight into the accuracies of the model, and a confusion matrix. Click the expanders below each element
     to read more about the information they convey.
-. <br>
+    <br>
     _________________________________________________________________________________________________________________</p>'''
     st.markdown(page_intro, unsafe_allow_html=True)
     

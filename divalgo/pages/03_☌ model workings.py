@@ -25,25 +25,60 @@ def main(df, model):
 
     page_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 52px;">Coefficients and Embeddings</p>'
     st.markdown(page_title, unsafe_allow_html=True)
-    page_intro = '<p style="font-family:Tahoma; font-size: 15px;" >The interactive plot below lets you explore the model performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. Let your mouse hover over the data points to view the images.</p>'
+    page_intro = '''<p style="font-family:Tahoma; font-size: 15px;" >The interactive plot below lets you explore the model
+     performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. 
+     Let your mouse hover over the data points to view the images.
+     <br>
+    _________________________________________________________________________________________________________________</p>'''
     st.markdown(page_intro, unsafe_allow_html=True)
 
     ##################
     # EMBEDDING PLOT #
     ##################
+    col1, _, col2, col3 = st.columns((1.5,0.4,1.1,1))
+    
+    with col2: 
+        empty = '<p <br> </p>'
+        st.markdown(empty, unsafe_allow_html=True)  
+        color_emb_plt = st.checkbox("Colour by class")
+        st.session_state["color_emb_plt"]=color_emb_plt 
+    
+    with col1:
+        point_size = st.slider('Choose size of points on slider', 0, 50, 10, 5)
 
-    point_size = st.slider('Size of points', 0, 50, 10, 5)
-    if not "embeddings" in st.session_state:
-        embedding_plot, embeddings = div.embedding_plot(df, size=point_size)
-        st.session_state["embeddings"] = embeddings
-    else:
-        embedding_plot, embeddings = div.embedding_plot(df, 
-                                                        size=point_size, 
-                                                        new_df=st.session_state["embeddings"])
-    doc = curdoc()
-    doc.theme = Theme(filename='custom.yaml')
-    doc.add_root(embedding_plot)
-    st.bokeh_chart(embedding_plot, use_container_width=True)
+
+    col4, col5 = st.columns((3,1))
+    with col4:
+        if not "embeddings" in st.session_state:
+            embedding_plot, embeddings = div.embedding_plot(df, size=point_size)
+            st.session_state["embeddings"] = embeddings
+        else:
+            embedding_plot, embeddings = div.embedding_plot(df, 
+                                                            size=point_size, 
+                                                            new_df=st.session_state["embeddings"])
+        doc = curdoc()
+        doc.theme = Theme(filename='custom.yaml')
+        doc.add_root(embedding_plot)
+        st.bokeh_chart(embedding_plot, use_container_width=True)
+
+    with col5:
+        heatmap_title = '<p style="font-family:Tahoma; color:#928374; font-size: 20px;"> Coefficient Heatmaps</p>'
+        st.markdown(heatmap_title, unsafe_allow_html=True)   
+        coef_intro = '''<p style="font-family:Tahoma; font-size: 12px;" >The plot below shows a heatmap of the model coefficients rearranged into the 
+        same shape as the training images were transformed into (50x50 pixels). Positive values indicate coefficients that push image prediction toward 
+        the class 'dog'. Negative values co indicate coefficients that push image prediction toward the class 'wolf'. </p>'''
+        st.markdown(coef_intro, unsafe_allow_html=True)
+        coef_heatmaps = div.coef_heatmaps(model)
+        coef_heatmaps.update_layout(
+            margin=dict(
+                l=5,
+                r=5,
+                b=50,
+                t=50,
+                # pad=4
+            )
+        )
+        st.plotly_chart(coef_heatmaps, use_container_width=True)
 
 
 if __name__ == "__main__":
