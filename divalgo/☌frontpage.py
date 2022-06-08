@@ -6,15 +6,16 @@ import os
 import pickle
 import shutil
 from PIL import Image
+import re
 
 def main(df, model):
     colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
     st.set_page_config(page_title="DIVALGO", layout="wide")
 
-    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
 
     with st.sidebar.container():
-        image = Image.open(os.path.join("logos", "logo.png"))
+        image = Image.open(os.path.join("logos", "trans_logo.png"))
         st.image(image, use_column_width=True) 
 
     r1c1, r1c2, r1c3 = st.columns([1.5,5,1.5])
@@ -28,18 +29,43 @@ def main(df, model):
     with r1c3:
         st.write(' ')
 
-    st.markdown("<p style='text-align: center; '>Welcome to divalgo. On this page, you can explore visualizations of your models, its predictions and its errors. <br>  blablabla blabla bla bla bla bla bla bla bla bla bla blablablabla bla bla bla bla blablablabla blabla la bla <br> blablabla blabla bla bla bla bla bla bla bla bla bla bla <br> </p>", unsafe_allow_html=True)
+    # Get model params
+    model_str = str(model)
+
+    if model_str[0:8] == 'Logistic': 
+        model_type = 'logistic regression'
+        p_iter = re.compile(r'(?<=max_iter=)\d+')
+        max_iter = int(re.findall(p_iter,model_str)[0])
+    
+    n_classes = len(model.classes_)
+    pen = model.get_params()['penalty']
+    tol = model.get_params()['tol']
+    solver = model.get_params()['solver']
+
+    st.markdown('''<p style="font-family:Tahoma; text-align:center; font-size: 16px;">Welcome to divalgo. This
+    dashboard allows you to explore and diagnose your trained model through 
+    interactive visuals and <br> performance  metrics. Navigate to the three site pages via the 
+    menu bar in the left side of this pager.
+    <br> 
+    ___________________________________________________
+    <br>
+    ''', unsafe_allow_html=True)
+
+    st.markdown(f'''<p style="font-family:Tahoma; text-align:center; font-size: 14px;">You have trained a {model_type} with {str(n_classes)} using {pen} regularisation. The model 
+    was trained for a maximum of {str(max_iter)} iterations <br> using the {solver} solver with a
+    tolerance set to {tol}. Enjoy exploring your model.
+     <br> <br> <br> </p>''', unsafe_allow_html=True)
 
     r2c1, r2c2, r2c3 , r2c4, r2c5 = st.columns([2,1,2,1,2])
 
     with r2c1:
-        st.image(os.path.join("logos", "circle.png"), use_column_width=True)
+        st.image(os.path.join("logos", "circle_plot.png"), use_column_width=True)
 
     with r2c3:
-        st.image(os.path.join("logos", "circle.png"), use_column_width=True)
+        st.image(os.path.join("logos", "circle_pie.png"), use_column_width=True)
 
     with r2c5:
-        st.image(os.path.join("logos", "circle.png"), use_column_width=True)
+        st.image(os.path.join("logos", "circle_img.png"), use_column_width=True)
 
         
 

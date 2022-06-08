@@ -111,19 +111,19 @@ def confusion_mat(y_test, y_pred, colors):
 
 
 # Defining function for interactive embedding plot
-def embedding_plot(df):
+def embedding_plot(df, size, new_df=None):
 
-    embeddings_2d, image_arrays = get_embeddings(df)
-
-    new_df = get_embedding_df(df, embeddings_2d, image_arrays)
-
+    if not isinstance(new_df, pd.DataFrame): 
+        embeddings_2d, image_arrays = get_embeddings(df)
+        new_df = get_embedding_df(df, embeddings_2d, image_arrays)
+    
     s1 = ColumnDataSource(data=new_df)
     color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
-
+    
     p1 = figure(plot_width=800, plot_height=800,
                 tools=('pan, wheel_zoom, reset, box_zoom'), 
                 title="UMAP projection of image embeddings")
-    p1.circle('x', 'y', source=s1, alpha=0.6, size = 10,
+    p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
             color=dict(field='pred_is_true', transform=color_mapping))
 
     p1.add_tools(HoverTool(tooltips="""
@@ -141,7 +141,7 @@ def embedding_plot(df):
     </div>
     """))
 
-    return p1
+    return p1, new_df
 
 
 ######################
@@ -192,5 +192,5 @@ class Evaluate:
         fig.show()
 
     def explore_embeddings(self):
-        p = embedding_plot(df=self.df)
+        p = embedding_plot(df=self.df, size = 10)
         show(p)
