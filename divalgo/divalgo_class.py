@@ -170,8 +170,8 @@ class Evaluate:
         self.df = pd.concat([self.df, df_2], axis=1)
 
     def open_visualization(self):
-
-        os.makedirs("tmp")
+        if not os.path.exists("tmp"):
+            os.makedirs("tmp")
         self.df.to_csv(os.path.join("tmp", "data.csv"))
         pickle.dump(self.model, open(os.path.join("tmp", "model.pkl"), "wb"))
 

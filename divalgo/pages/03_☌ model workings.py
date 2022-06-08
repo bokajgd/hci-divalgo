@@ -25,8 +25,10 @@ def main(df, model):
     # EMBEDDING PLOT #
     ##################
 
-    embedding_plot = div.embedding_plot(df)
+    if "embedding" not in st.session_state:
+        st.session_state["embedding"] = div.embedding_plot(df)
 
+    embedding_plot = st.session_state["embedding"]
     st.bokeh_chart(embedding_plot)
 
 
