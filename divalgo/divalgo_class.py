@@ -7,8 +7,10 @@ import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import pandas as pd
 import pickle 
+from bokeh.themes import built_in_themes
 import numpy as np
 from bokeh.plotting import figure, show, output_notebook
+from bokeh.io import curdoc
 from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper, CustomJS, Circle
 
 from utils import get_embeddings, prob_barplot, np_image_to_base64, get_embedding_df
@@ -111,7 +113,7 @@ def confusion_mat(y_test, y_pred, colors):
 
 
 # Defining function for interactive embedding plot
-def embedding_plot(df):
+def embedding_plot(df, size):
 
     embeddings_2d, image_arrays = get_embeddings(df)
 
@@ -119,11 +121,13 @@ def embedding_plot(df):
 
     s1 = ColumnDataSource(data=new_df)
     color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
+    
+    curdoc().theme = 'dark_minimal'
 
     p1 = figure(plot_width=800, plot_height=800,
                 tools=('pan, wheel_zoom, reset, box_zoom'), 
                 title="UMAP projection of image embeddings")
-    p1.circle('x', 'y', source=s1, alpha=0.6, size = 10,
+    p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
             color=dict(field='pred_is_true', transform=color_mapping))
 
     p1.add_tools(HoverTool(tooltips="""
@@ -192,5 +196,5 @@ class Evaluate:
         fig.show()
 
     def explore_embeddings(self):
-        p = embedding_plot(df=self.df)
+        p = embedding_plot(df=self.df, size = 10)
         show(p)

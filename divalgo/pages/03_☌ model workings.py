@@ -25,9 +25,11 @@ def main(df, model):
     # EMBEDDING PLOT #
     ##################
 
-    embedding_plot = div.embedding_plot(df)
+    point_size = st.slider('Size of points', 0, 50, 10, 5)
 
-    st.bokeh_chart(embedding_plot)
+    embedding_plot = div.embedding_plot(df, size=point_size)
+    
+    st.bokeh_chart(embedding_plot, use_container_width=True)
 
 
 if __name__ == "__main__":
