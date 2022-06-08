@@ -7,10 +7,8 @@ import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import pandas as pd
 import pickle 
-from bokeh.themes import built_in_themes
 import numpy as np
 from bokeh.plotting import figure, show, output_notebook
-from bokeh.io import curdoc
 from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper, CustomJS, Circle
 
 from utils import get_embeddings, prob_barplot, np_image_to_base64, get_embedding_df
@@ -122,8 +120,6 @@ def embedding_plot(df, size, new_df=None):
     s1 = ColumnDataSource(data=new_df)
     color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
     
-    curdoc().theme = 'dark_minimal'
-
     p1 = figure(plot_width=800, plot_height=800,
                 tools=('pan, wheel_zoom, reset, box_zoom'), 
                 title="UMAP projection of image embeddings")
