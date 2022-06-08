@@ -42,14 +42,16 @@ def main(df, model):
     tol = model.get_params()['tol']
     solver = model.get_params()['solver']
 
-    st.markdown(f'''<p style="font-family:Tahoma; text-align:center; font-size: 14px;">Welcome to divalgo. This
+    st.markdown('''<p style="font-family:Tahoma; text-align:center; font-size: 16px;">Welcome to divalgo. This
     dashboard allows you to explore and diagnose your trained model through 
     interactive visuals and <br> performance  metrics. Navigate to the three site pages via the 
     menu bar in the left side of this pager.
     <br> 
-    ______________________________________________________________
+    ___________________________________________________
     <br>
-    You have trained a {model_type} with {str(n_classes)} using {pen} regularisation. The model 
+    ''', unsafe_allow_html=True)
+
+    st.markdown(f'''<p style="font-family:Tahoma; text-align:center; font-size: 14px;">You have trained a {model_type} with {str(n_classes)} using {pen} regularisation. The model 
     was trained for a maximum of {str(max_iter)} iterations <br> using the {solver} solver with a
     tolerance set to {tol}. Enjoy exploring your model.
      <br> <br> <br> </p>''', unsafe_allow_html=True)
