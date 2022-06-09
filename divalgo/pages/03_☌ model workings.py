@@ -25,8 +25,9 @@ def main(df, model):
 
     page_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 52px;">Coefficients and Embeddings</p>'
     st.markdown(page_title, unsafe_allow_html=True)
-    page_intro = '''<p style="font-family:Tahoma; font-size: 15px;" >The interactive plot below lets you explore the model
-     performance on the test set by projecting the images in the test data set onto a 2D plane using uMAP embeddings. 
+    page_intro = '''<p style="font-family:Tahoma; font-size: 15px;" >This page lets you engage interactively with your test data 
+     in relation to the performance and predictions of your trained model. The interactive plot below lets you explore the model
+     performance on the test set by projecting the images in the test data set onto a 2D plane using UMAP embeddings. 
      Let your mouse hover over the data points to view the images.
      <br>
     _________________________________________________________________________________________________________________</p>'''
