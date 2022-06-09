@@ -60,7 +60,7 @@ pip install -r requirements.txt
 
 ### Run the demo
 This repository comes with a Jupyter notebook (divalgo/demo.ipynb) demonstrating the visualization tool, using the dataset 'dogs vs wolfs' from Kaggle.
-The dataset can be found here: https://www.kaggle.com/datasets/harishvutukuri/dogs-vs-wolves.
+The dataset can be found <a href="https://www.kaggle.com/datasets/harishvutukuri/dogs-vs-wolves">here</a>.
 To run the demonstration, download the data and place the 'data' folder in the top level of this project (see folder structure below). 
 Then navigate to the directory of the demonstration notebook by running
 
