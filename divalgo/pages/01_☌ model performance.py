@@ -19,18 +19,82 @@ def main(df, model):
         image = Image.open(os.path.join("logos", "trans_logo.png"))
         st.image(image, use_column_width=True)
 
-    st.markdown("## Overall model performance")
-    st.markdown("Below is accuracy visualized, along with the possibility of splitting by type. This allows you to investigate whether your model is consistently better at predicting one class than another")
+    page_title = '<p style="font-family:Tahoma; text-align:center; color:#928374; font-size: 52px;"> Overall Model Performance</p>'
+    st.markdown(page_title, unsafe_allow_html=True)    
+    page_intro = '''<p style="font-family:Tahoma; font-size: 15px;" >This page enables you to explore general performance properties
+    of your trained model. The page contains a tabular overview of common ML performance metrics, an AUC-ROC for the model,
+    pie charts giving insight into the accuracies of the model, and a confusion matrix. Click the expanders below each element
+    to read more about the information they convey.
+    <br>
+    _________________________________________________________________________________________________________________</p>'''
+    st.markdown(page_intro, unsafe_allow_html=True)
+    
     ############
-    # ACCURACY #
+    # PLOTS #
     ############
+
+    roc = div.roc_curve_plot(df["y_test"], df["prob1"])
+    roc.update_layout(
+        margin=dict(
+            l=10,
+            r=60,
+            b=80,
+            t=2,
+            # pad=4
+        )
+    )
+
+    metrics_table = div.metrics_table(df, model)
+    metrics_table.update_layout(
+        margin=dict(
+            l=15,
+            r=15,
+            b=40,
+            t=20,
+            # pad=4
+        )
+    )
+
+    col1, col2 = st.columns(2)
+    with col1:
+        auc_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> AUC-ROC Curve</p>'
+        st.markdown(auc_title, unsafe_allow_html=True)   
+        st.plotly_chart(roc, use_container_width=True)
+    
+    with col2:
+        table_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> Metrics Table</p>'
+        st.markdown(table_title, unsafe_allow_html=True)   
+        eq_help = st.checkbox("See equations")
+
+        st.session_state["eq_help"]=eq_help 
+
+        if not st.session_state["eq_help"]:
+            metrics_table = div.metrics_table(df, model)
+            metrics_table.update_layout(
+                margin=dict(
+                    l=15,
+                    r=15,
+                    b=40,
+                    t=20))
+            st.plotly_chart(metrics_table, use_container_width=True)
+        if st.session_state["eq_help"]:
+            metrics_table = div.metrics_table(df, model, help=True)
+            metrics_table.update_layout(
+                margin=dict(
+                    l=15,
+                    r=15,
+                    b=40,
+                    t=20))
+            st.plotly_chart(metrics_table, use_container_width=True)
 
     acc = accuracy_score(df["y_test"], df["y_pred"])
     if "acc_by_type" not in st.session_state:
         st.session_state["acc_by_type"]=None
-    
-    col1, col2 = st.columns(2)
-    with col1:
+
+    col3, col4 = st.columns(2)
+    with col3:
+        pie_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> Pie Charts</p>'
+        st.markdown(pie_title, unsafe_allow_html=True)   
         acc_by_type = st.checkbox("Split pie by type")
         st.session_state["acc_by_type"]=acc_by_type 
     
@@ -44,10 +108,15 @@ def main(df, model):
             l=10,
             r=60,
             b=80,
-            t=2,
+            t=15,
             # pad=4
         )
     )
+
+    with col4:
+        cm_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> Confusion Matrix</p>'
+        st.markdown(cm_title, unsafe_allow_html=True)   
+
     ####################
     # Confusion matrix #
     ####################
@@ -58,26 +127,17 @@ def main(df, model):
             l=10,
             r=10,
             b=80,
-            t=5,
+            t=0,
             # pad=4
         )
     )
 
-    col3, col4 = st.columns(2)
-    with col3:
-        st.plotly_chart(accuracy_chart, use_container_width=True)
-
-    with col4:
-        st.plotly_chart(cm, use_container_width=True)
-
-
-    roc = div.roc_curve_plot(df["y_test"], df["prob1"])
-
     col5, col6 = st.columns(2)
     with col5:
-        st.plotly_chart(roc, use_container_width=True)
+        st.plotly_chart(accuracy_chart, use_container_width=True)
 
-
+    with col6:
+        st.plotly_chart(cm, use_container_width=True)
     
     with st.expander("Help"):
         st.markdown("""Accuracy of model tells you the percentage of true predictions. An accuracy of 70% thus means that the model \

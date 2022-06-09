@@ -1,14 +1,16 @@
 import os
 import streamlit as st
 from sklearn.base import is_classifier, is_regressor
-from sklearn.metrics import confusion_matrix, accuracy_score, roc_curve, auc
+from sklearn.metrics import confusion_matrix, accuracy_score, roc_curve, auc, classification_report
 from sklearn.linear_model import LogisticRegression
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import plotly.express as px
+from plotly.subplots import make_subplots
 import pandas as pd
 import pickle 
 import numpy as np
+import math
 from bokeh.plotting import figure, show, output_notebook
 from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper, CustomJS, Circle
 
@@ -34,8 +36,8 @@ def accuracy_chart_type(confusion:tuple,
                      sort=False,
                      direction="clockwise")]
     )
-    fig.update_traces(textposition='inside', textinfo='percent+label', marker = dict(colors = colors), textfont_size=18)
-    fig.update_layout(showlegend=False, font_family="Times New Roman")
+    fig.update_traces(textposition='inside', textinfo='percent+label', marker = dict(colors = colors), textfont_size=16)
+    fig.update_layout(showlegend=False, font_family="Tahoma")
     
     return fig
 
@@ -59,9 +61,9 @@ def accuracy_chart(accuracy,
 
     fig = go.FigureWidget()
     fig.add_pie(values=df["Value"], labels=df["Type"], marker = dict(colors=colors))
-    fig.update_traces(textposition='inside', textinfo='percent+label', textfont_size=20)
+    fig.update_traces(textposition='inside', textinfo='percent+label', textfont_size=16)
     fig.update_layout(showlegend=False,
-                      font_family="Times New Roman")
+                      font_family="Tahoma")
     
     return fig
 
@@ -97,16 +99,36 @@ def confusion_mat(y_test, y_pred, colors):
             [1, color3]]
 
 
-    labels=["Dogs", "Wolfs"] # How to know what to use here????
+    labelsx=["Actual Dogs", "Actual Wolfs"] 
+    labelsy=["Predicted Dogs", "Predicted Wolfs"] 
     z_text = z_text = [[str(y) for y in x] for x in matrix]
     fig = ff.create_annotated_heatmap(matrix, 
-                                      x=labels, 
-                                      y=labels, 
+                                      x=labelsx, 
+                                      y=labelsy, 
                                       annotation_text=z_text, 
                                       colorscale=mycolors
                                       )
+    fig.update_yaxes(tickangle=270)
 
-    fig.update_layout(width=400, height=400)
+    fig.layout.update(
+        go.Layout(
+            autosize=False,
+            font=dict(
+            family="Tahoma",
+            size = 16
+            ),
+            xaxis=dict(
+            domain=[0.05,1],
+            position=0.99
+            ),
+            yaxis=dict(
+            domain=[0,0.95],
+            position=0.01
+            )
+        )
+        )
+
+    fig.update_layout(width=400, height=450)
     
     return fig
 
@@ -114,32 +136,55 @@ def confusion_mat(y_test, y_pred, colors):
 
 
 # Defining function for interactive embedding plot
-def embedding_plot(df, size, new_df=None):
+def embedding_plot(df, size, colour=False, new_df=None):
 
     if not isinstance(new_df, pd.DataFrame): 
         embeddings_2d, image_arrays = get_embeddings(df)
         new_df = get_embedding_df(df, embeddings_2d, image_arrays)
     
     s1 = ColumnDataSource(data=new_df)
-    color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
     
-    p1 = figure(plot_width=800, plot_height=800,
+    if colour:
+        color_mapping_dw = CategoricalColorMapper(factors=["Dog", "Wolf"], palette=["#8B959A", "#FECEA8"])
+    else:
+        color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
+    
+    p1 = figure(plot_width=800, plot_height=700,
                 tools=('pan, wheel_zoom, reset, box_zoom'), 
-                title="UMAP projection of image embeddings")
-    p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
-            color=dict(field='pred_is_true', transform=color_mapping))
+                title="UMAP Projection of Image Embeddings")
+    p1.title.text_font_size = '14pt'
+    p1.xaxis.major_label_text_font_size = "10pt"
+    p1.xaxis.major_label_text_color = '#928374'
+    p1.yaxis.major_label_text_font_size = "10pt"
+    p1.yaxis.major_label_text_color = '#928374'
+
+    if colour:
+        p1.circle('x', 'y', source=s1, alpha=0.7, size = size,
+        color=dict(field='category_cap', transform=color_mapping_dw),  legend='category_cap')
+
+    else:
+        p1.circle('x', 'y', source=s1, alpha=0.7, size = size,
+        color=dict(field='pred_is_true', transform=color_mapping), legend='pred_is_true')
+
+    p1.legend.location = "bottom_left"
+    p1.legend.label_text_font = "tahoma"
+    p1.legend.orientation = "horizontal"
+    p1.legend.label_text_color = "#8B959A"
+    p1.legend.background_fill_color = "#1D2427"
+    p1.legend.background_fill_alpha = 0.7
+
 
     p1.add_tools(HoverTool(tooltips="""
     <div>
         <div class="column">
-            <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:175px;height:125px;'/>
+            <img src='@bar' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
         <div>
         <div class="column">
-            <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:175px;height:125px;'/>
+            <img src='@image' style='float: left; margin: 5px 5px 5px 5px width:250px;height:200px;'/>
         <div>
-            <span style='font-size: 12px'> <strong> Predicted class: </strong> @prediction</span>
+            <span> <strong> Predicted class: </strong> @prediction</span>
         <div>
-            <span style='font-size: 12px'> <strong> True class: </strong>  @category </span>
+            <span> <strong> True class: </strong>  @category </span>
         </div>
     </div>
     """))
@@ -154,7 +199,7 @@ def roc_curve_plot(y_test, y_pred_probs):
     fig = px.area(
         x=fpr, y=tpr,
         labels=dict(x='False Positive Rate', y='True Positive Rate'),
-        width=700, height=500,
+        width=540, height=440,
         color_discrete_sequence=['#FECEA8']
         
     )
@@ -168,6 +213,16 @@ def roc_curve_plot(y_test, y_pred_probs):
             x=0.85, y=0.1, showarrow=False
         )
     fig.update_annotations(bgcolor='#1D2427', font_color='#8B959A')
+
+    fig.update_layout(
+        font_color="#8B959A",
+        font=dict(
+            family="Tahoma",
+            size=14,
+            color="#8B959A"
+        )
+    )
+
     fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)', 
                         'paper_bgcolor': 'rgba(0, 0, 0, 0)',
                         'font_color': '#8B959A',
@@ -179,6 +234,85 @@ def roc_curve_plot(y_test, y_pred_probs):
 
     return fig
 
+# Function for plotting coefficients
+def coef_heatmaps(model, absolute=False, height=240):
+    
+    if absolute:
+        coefs = abs(model.coef_)
+    else:
+        coefs = model.coef_
+    dim = int(math.sqrt(coefs.shape[1]))
+    n_classes = coefs.shape[0]
+    rows = n_classes
+
+    fig = make_subplots(rows, 1, vertical_spacing=0.08)
+    for i in range(n_classes):
+        fig.add_trace(go.Heatmap(z=coefs[i].reshape(dim, dim),coloraxis='coloraxis1'), i+1, 1)
+        #fig.update_layout(coloraxis_showscale=False, )
+
+        fig.update_xaxes(showticklabels=False) # Hide x axis ticks 
+        fig.update_yaxes(showticklabels=False) # Hide y axis ticks
+        fig.update_layout(width=400, height=height,coloraxis=dict(colorscale=[(0.00, "#8B959A"),   (1, "#FECEA8")]), coloraxis_colorbar_thickness=5, showlegend=False)
+
+    return fig
+
+def metrics_table(df, model, help=False):
+
+    n_classes = df['y_test'].nunique()
+    cr = pd.DataFrame.from_dict(classification_report(np.array(df['y_test']), np.array(df['y_pred']), output_dict=True))
+    cm = confusion_matrix(np.array(df['y_test']), np.array(df['y_pred']))
+    accs = cm.diagonal()/cm.sum(axis=1)
+
+    for i in range(n_classes+1):
+        if i == 0:
+            f1 = ['F1-score']
+            rec = ['Recall']
+            pre = ['Precision']
+            sup = ['Support']
+            acc = ['Accuracy']
+            headers = ['Metrics']
+        else:
+            f1.append(np.round(cr._get_value(0, i-1, takeable = True),3))
+            rec.append(np.round(cr._get_value(1, i-1, takeable = True),3))
+            pre.append(np.round(cr._get_value(2, i-1, takeable = True),3))
+            sup.append(int(cr._get_value(3, i-1, takeable = True)))
+            acc.append(f'{np.round(accs[i-1]*100)}%')
+            headers.append(f"Class '{df['y_test'].unique()[i-1]}'")
+    
+    if help:
+        headers.append('Equation')
+        rec.append('$a^{2}+b^{2}=c^{2}$')
+        pre.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+        sup.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+        f1.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+        acc.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+
+    matrix = np.column_stack((f1, rec, pre, acc, sup))
+
+    data=[go.Table(
+        columnwidth = [3.6,3,3],
+        header=dict(values=[f"{col}" for col in headers],
+                    fill_color='#928374',
+                    line_color='#fecea8',
+                    line_width=1.5,
+                    align='center',
+                    font=dict(color='#2A363B', family="tahoma", size=18),
+                    height=40
+                    ),
+        cells=dict(values=matrix,
+                fill_color='#2A363B',
+                    line_color='#928374',
+                line_width=1.5,
+                align='left',
+                font=dict(color='#8B959A', family="tahoma", size=18),
+                height=51
+                ))
+    ]
+
+    fig = go.Figure(data=data)
+    
+    return fig
+            
 
 ######################
 # DEFINING THE CLASS #
@@ -233,4 +367,12 @@ class Evaluate:
     
     def plot_roc_curve(self):
         fig = roc_curve_plot(self.y_test, self.y_pred_probs[:, 1])
+        fig.show()
+
+    def plot_coefs(self):
+        fig = coef_heatmaps(self.model)
+        fig.show()
+
+    def get_metrics(self):
+        fig = metrics_table(self.df, self.model)
         fig.show()

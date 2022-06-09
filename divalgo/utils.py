@@ -55,8 +55,10 @@ def prob_barplot(probabilities: np.array):
     s = io.BytesIO()
 
     plt.figure()
-    ax = sns.barplot(x=['Wolf', 'Dog'], y=probabilities*100, 
-    palette=['#6593B1', '#FECEA8'] )
+    ax = sns.barplot(x=['Dog', 'Wolf'], y=probabilities*100, 
+    palette=['#8B959A', '#FECEA8'] )
+    ax.tick_params(axis="y",which="major",labelsize=12,color="#2A363B")
+    ax.tick_params(axis="x", which="major", labelsize=18, color="#2A363B")
     sns.despine()
     sns.set_style("whitegrid")
 
@@ -65,7 +67,7 @@ def prob_barplot(probabilities: np.array):
         x = bar.get_x()
         width = bar.get_width()
         height = bar.get_height()
-        ax.text(x+width/2., height + 2, full_lab, ha="center") 
+        ax.text(x+width/2., height + 2, full_lab, fontsize=18, color="#2A363B", family="tahoma", ha="center") 
 
     plt.savefig(s, format='png', bbox_inches="tight")
     plt.close()
@@ -97,6 +99,8 @@ def get_embedding_df(base_df, embeddings_2d, image_arrays):
             "category": base_df['y_test'],
             "pred_is_true": [str(base_df['y_pred'][i] == base_df['y_test'][i]) for i in range(len(base_df['y_pred']))]
             })
+
+    df['category_cap'] = df['category'].copy().str.capitalize()
 
     return df
 
