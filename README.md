@@ -88,7 +88,7 @@ This repository has the following structure:
 │   └──🚪frontpage.py      <- main streamlit file and frontpage
 ├── data                   <- folder containing the data - dogs vs wolf from Kaggle for the demonstration     
 |   ├── dogs               <- folder containing images of dogs
-|   └── wolfs              <- folder containing images of wolfs
+|   └── wolves              <- folder containing images of wolves
 ├── .gitignore                 
 ├── synopsis.pdf           <- the synopsis for the project
 ├── README.md              <- the top-level README
