@@ -385,7 +385,7 @@ class Evaluate:
         fig.show()
 
     def explore_embeddings(self):
-        p = embedding_plot(df=self.df, size = 10)
+        p, _ = embedding_plot(df=self.df, size = 10)
         show(p)
     
     def plot_roc_curve(self):
