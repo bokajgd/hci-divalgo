@@ -394,6 +394,6 @@ class Evaluate:
         fig = coef_heatmaps(self.model)
         fig.show()
 
-    def get_metrics(self, equations):
-        fig, matrix = metrics_table(self.df, self.model, equations=False)
+    def get_metrics(self, equations=False):
+        fig, matrix = metrics_table(self.df, self.model, equations=equations)
         fig.show()
