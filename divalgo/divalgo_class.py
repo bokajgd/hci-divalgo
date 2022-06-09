@@ -369,7 +369,9 @@ class Evaluate:
         os.system(f'streamlit run {os.path.join("☌frontpage.py")}')
 
     def confusion(self):
-        fig = confusion_mat(self.y_test, self.y_pred)
+        colors = self.colors
+        cm_colors = [colors[0], colors[3], colors[2], colors[1]]
+        fig = confusion_mat(self.y_test, self.y_pred, cm_colors)
         fig.show()
     
     def accuracy(self, labels=["True predictions", "False predictions"]):
@@ -390,8 +392,8 @@ class Evaluate:
         fig = roc_curve_plot(self.y_test, self.y_pred_probs[:, 1])
         fig.show()
 
-    def plot_coefs(self):
-        fig = coef_heatmaps(self.model)
+    def plot_coefs(self, absolute=False):
+        fig = coef_heatmaps(self.model, absolute=absolute)
         fig.show()
 
     def get_metrics(self, equations=False):
