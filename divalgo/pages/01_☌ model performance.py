@@ -44,16 +44,53 @@ def main(df, model):
         )
     )
 
+    metrics_table = div.metrics_table(df, model)
+    metrics_table.update_layout(
+        margin=dict(
+            l=15,
+            r=15,
+            b=40,
+            t=20,
+            # pad=4
+        )
+    )
+
     col1, col2 = st.columns(2)
     with col1:
-        auc_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> AUC-ROC Curve</p>'
+        auc_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> AUC-ROC Curve</p>'
         st.markdown(auc_title, unsafe_allow_html=True)   
         st.plotly_chart(roc, use_container_width=True)
+    
+    with col2:
+        table_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> Metrics Table</p>'
+        st.markdown(table_title, unsafe_allow_html=True)   
+        eq_help = st.checkbox("See equations")
+
+        st.session_state["eq_help"]=eq_help 
+
+        if not st.session_state["eq_help"]:
+            metrics_table = div.metrics_table(df, model)
+            metrics_table.update_layout(
+                margin=dict(
+                    l=15,
+                    r=15,
+                    b=40,
+                    t=20))
+            st.plotly_chart(metrics_table, use_container_width=True)
+        if st.session_state["eq_help"]:
+            metrics_table = div.metrics_table(df, model, help=True)
+            metrics_table.update_layout(
+                margin=dict(
+                    l=15,
+                    r=15,
+                    b=40,
+                    t=20))
+            st.plotly_chart(metrics_table, use_container_width=True)
 
     acc = accuracy_score(df["y_test"], df["y_pred"])
     if "acc_by_type" not in st.session_state:
         st.session_state["acc_by_type"]=None
-    
+
     col3, col4 = st.columns(2)
     with col3:
         pie_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> Pie Charts</p>'

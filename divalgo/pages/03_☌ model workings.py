@@ -57,9 +57,9 @@ def main(df, model):
                 st.session_state["embeddings"] = embeddings
         else:
             if not st.session_state["color_emb_plt"]:
-                embedding_plot, embeddings = div.embedding_plot(df,size=point_size)
+                embedding_plot, embeddings = div.embedding_plot(df,size=point_size, new_df=st.session_state["embeddings"] )
             else:
-                embedding_plot, embeddings = div.embedding_plot(df, colour=True, size=point_size)
+                embedding_plot, embeddings = div.embedding_plot(df, colour=True, size=point_size, new_df=st.session_state["embeddings"] )
 
         doc = curdoc()
         doc.theme = Theme(filename='custom.yaml')

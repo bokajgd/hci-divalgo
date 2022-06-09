@@ -100,5 +100,7 @@ def get_embedding_df(base_df, embeddings_2d, image_arrays):
             "pred_is_true": [str(base_df['y_pred'][i] == base_df['y_test'][i]) for i in range(len(base_df['y_pred']))]
             })
 
+    df['category_cap'] = df['category'].copy().str.capitalize()
+
     return df
 

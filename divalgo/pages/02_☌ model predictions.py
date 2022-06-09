@@ -76,7 +76,7 @@ def main(df):
         st.session_state["other"] = other
     class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {st.session_state["own"]} were {st.session_state["classification"]} as {st.session_state["other"]}</p>'
     st.markdown(class_str, unsafe_allow_html=True)
-    st.image(st.session_state["images"], width=300)
+    st.image(st.session_state["images"], width=312)
 
 
 if __name__ == "__main__":

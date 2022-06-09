@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 from sklearn.base import is_classifier, is_regressor
-from sklearn.metrics import confusion_matrix, accuracy_score, roc_curve, auc
+from sklearn.metrics import confusion_matrix, accuracy_score, roc_curve, auc, classification_report
 from sklearn.linear_model import LogisticRegression
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
@@ -145,7 +145,7 @@ def embedding_plot(df, size, colour=False, new_df=None):
     s1 = ColumnDataSource(data=new_df)
     
     if colour:
-        color_mapping_dw = CategoricalColorMapper(factors=["dog", "wolf"], palette=["#8B959A", "#FECEA8"])
+        color_mapping_dw = CategoricalColorMapper(factors=["Dog", "Wolf"], palette=["#8B959A", "#FECEA8"])
     else:
         color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
     
@@ -159,19 +159,19 @@ def embedding_plot(df, size, colour=False, new_df=None):
     p1.yaxis.major_label_text_color = '#928374'
 
     if colour:
-        p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
-        color=dict(field='category', transform=color_mapping_dw))
+        p1.circle('x', 'y', source=s1, alpha=0.7, size = size,
+        color=dict(field='category_cap', transform=color_mapping_dw),  legend='category_cap')
 
     else:
-        p1.circle('x', 'y', source=s1, alpha=0.6, size = size,
+        p1.circle('x', 'y', source=s1, alpha=0.7, size = size,
         color=dict(field='pred_is_true', transform=color_mapping), legend='pred_is_true')
-        p1.legend.location = "bottom_left"
-        p1.legend.label_text_font = "tahoma"
-        p1.legend.orientation = "horizontal"
-        p1.legend.label_text_color = "#8B959A"
-        p1.legend.background_fill_color = "#1D2427"
-        p1.legend.background_fill_alpha = 0.7
-        
+
+    p1.legend.location = "bottom_left"
+    p1.legend.label_text_font = "tahoma"
+    p1.legend.orientation = "horizontal"
+    p1.legend.label_text_color = "#8B959A"
+    p1.legend.background_fill_color = "#1D2427"
+    p1.legend.background_fill_alpha = 0.7
 
 
     p1.add_tools(HoverTool(tooltips="""
@@ -256,7 +256,63 @@ def coef_heatmaps(model, absolute=False, height=240):
 
     return fig
 
+def metrics_table(df, model, help=False):
+
+    n_classes = df['y_test'].nunique()
+    cr = pd.DataFrame.from_dict(classification_report(np.array(df['y_test']), np.array(df['y_pred']), output_dict=True))
+    cm = confusion_matrix(np.array(df['y_test']), np.array(df['y_pred']))
+    accs = cm.diagonal()/cm.sum(axis=1)
+
+    for i in range(n_classes+1):
+        if i == 0:
+            f1 = ['F1-score']
+            rec = ['Recall']
+            pre = ['Precision']
+            sup = ['Support']
+            acc = ['Accuracy']
+            headers = ['Metrics']
+        else:
+            f1.append(np.round(cr._get_value(0, i-1, takeable = True),3))
+            rec.append(np.round(cr._get_value(1, i-1, takeable = True),3))
+            pre.append(np.round(cr._get_value(2, i-1, takeable = True),3))
+            sup.append(int(cr._get_value(3, i-1, takeable = True)))
+            acc.append(f'{np.round(accs[i-1]*100)}%')
+            headers.append(f"Class '{df['y_test'].unique()[i-1]}'")
     
+    if help:
+        headers.append('Equation')
+        rec.append('$a^{2}+b^{2}=c^{2}$')
+        pre.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+        sup.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+        f1.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+        acc.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+
+    matrix = np.column_stack((f1, rec, pre, acc, sup))
+
+    data=[go.Table(
+        columnwidth = [3.6,3,3],
+        header=dict(values=[f"{col}" for col in headers],
+                    fill_color='#928374',
+                    line_color='#fecea8',
+                    line_width=1.5,
+                    align='center',
+                    font=dict(color='#2A363B', family="tahoma", size=18),
+                    height=40
+                    ),
+        cells=dict(values=matrix,
+                fill_color='#2A363B',
+                    line_color='#928374',
+                line_width=1.5,
+                align='left',
+                font=dict(color='#8B959A', family="tahoma", size=18),
+                height=51
+                ))
+    ]
+
+    fig = go.Figure(data=data)
+    
+    return fig
+            
 
 ######################
 # DEFINING THE CLASS #
@@ -315,4 +371,8 @@ class Evaluate:
 
     def plot_coefs(self):
         fig = coef_heatmaps(self.model)
+        fig.show()
+
+    def get_metrics(self):
+        fig = metrics_table(self.df, self.model)
         fig.show()
