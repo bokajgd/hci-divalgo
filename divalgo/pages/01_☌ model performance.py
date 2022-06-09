@@ -11,6 +11,58 @@ from PIL import Image
 colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
 st.set_page_config(page_title="DIVALGO", layout="wide")
 
+def get_pie_text(acc_by_type):
+    if acc_by_type:
+        text = """
+        <p style="font-family:Tahoma; font-size: 13px;" >This chart shows model accuracy. 
+        Accuracy is percentage of true predictions out of total predictions. 
+        Thus, an accuracy of 70% means the model predicts the true label for 70% of the test samples.</p>
+        """
+    else: 
+        text = """
+        <p style="font-family:Tahoma; font-size: 13px;" >This chart shows proportions of True Positives (TPs), 
+        True Negatives (TNs), False Positives (FPs) and False Negatives (FNs).
+        TP is the proportion of classifications that are correctly predicted to be class 1, 
+        while TN is correctly predicted class 0's. 
+        Conversely, FP is porportion of misclassifications of class 0's and class 1's, and FN class 1's as class 0's.
+        Compare this chart with the confusion matrix to the right.</p>
+        """
+    return text
+
+def get_cm_text():
+    text = """ <p style="font-family:Tahoma; font-size: 13px;" >This matrix shows the distribution of True Positives (TPs), 
+        True Negatives (TNs), False Positives (FPs) and False Negatives (FNs).
+        TP is the proportion of classifications that are correctly predicted to be class 1, 
+        while TN is correctly predicted class 0's. 
+        Conversely, FP is porportion of misclassifications of class 0's and class 1's, and FN class 1's as class 0's.
+        Compare this chart with the pie chart to the left.
+        Read more <a href="https://en.wikipedia.org/wiki/Confusion_matrix">here</a></p>
+    """
+    return text
+
+def get_aucroc_text():
+    text = """ <p style="font-family:Tahoma; font-size: 13px;" >This plot shows the AUC-ROC curve, 
+    that is, the Area Under the Curve - Receiver Operating Characteristics. 
+    It shows the relationship between True Positive Rate (TPR), which is defined as TP /(TP+FN) (see figures below),
+    and False Positive Rate (FPR), defined as FP / (TN+FP).
+    AUC-ROC is a good measures is your dataset is unbalanced. 
+    You can check this in the table to the right.
+    Read more <a href="https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5">here</a></p>
+    """
+    return text
+
+def get_table_text():
+    text = """ <p style="font-family:Tahoma; font-size: 13px;" >This table shows basic model performance measures. 
+    They all rely on relations between  True Positives (TPs), 
+    True Negatives (TNs), False Positives (FPs) and False Negatives (FNs).
+    TP is the proportion of classifications that are correctly predicted to be class 1, 
+    while TN is correctly predicted class 0's. 
+    Conversely, FP is porportion of misclassifications of class 0's and class 1's, and FN class 1's as class 0's.
+    Support is the number of data points in each class. Thus, you can check the balance of your dataset here. 
+    </p>
+    """
+    return text
+
 
 def main(df, model):
     st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
@@ -44,22 +96,15 @@ def main(df, model):
         )
     )
 
-    metrics_table = div.metrics_table(df, model)
-    metrics_table.update_layout(
-        margin=dict(
-            l=15,
-            r=15,
-            b=40,
-            t=20,
-            # pad=4
-        )
-    )
-
+    # metrics_table = div.metrics_table(df, model)
     col1, col2 = st.columns(2)
     with col1:
         auc_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> AUC-ROC Curve</p>'
         st.markdown(auc_title, unsafe_allow_html=True)   
         st.plotly_chart(roc, use_container_width=True)
+        aucroc_text = get_aucroc_text()
+        with st.expander("What does this show?"):
+            st.markdown(aucroc_text, unsafe_allow_html=True)
     
     with col2:
         table_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> Metrics Table</p>'
@@ -70,22 +115,19 @@ def main(df, model):
 
         if not st.session_state["eq_help"]:
             metrics_table = div.metrics_table(df, model)
-            metrics_table.update_layout(
-                margin=dict(
-                    l=15,
-                    r=15,
-                    b=40,
-                    t=20))
-            st.plotly_chart(metrics_table, use_container_width=True)
         if st.session_state["eq_help"]:
             metrics_table = div.metrics_table(df, model, help=True)
-            metrics_table.update_layout(
-                margin=dict(
-                    l=15,
-                    r=15,
-                    b=40,
-                    t=20))
-            st.plotly_chart(metrics_table, use_container_width=True)
+        metrics_table.update_layout(height=400,
+            margin=dict(
+                l=15,
+                r=15,
+                b=0,
+                t=20))
+        
+        st.plotly_chart(metrics_table, use_container_width=True)
+        with st.expander("What does this show?"):
+            table_text = get_table_text()
+            st.markdown(table_text, unsafe_allow_html=True)
 
     acc = accuracy_score(df["y_test"], df["y_pred"])
     if "acc_by_type" not in st.session_state:
@@ -93,7 +135,7 @@ def main(df, model):
 
     col3, col4 = st.columns(2)
     with col3:
-        pie_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> Pie Charts</p>'
+        pie_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"><br><br> Pie Charts</p>'
         st.markdown(pie_title, unsafe_allow_html=True)   
         acc_by_type = st.checkbox("Split pie by type")
         st.session_state["acc_by_type"]=acc_by_type 
@@ -114,7 +156,7 @@ def main(df, model):
     )
 
     with col4:
-        cm_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> Confusion Matrix</p>'
+        cm_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"><br><br> Confusion Matrix</p>'
         st.markdown(cm_title, unsafe_allow_html=True)   
 
     ####################
@@ -135,18 +177,16 @@ def main(df, model):
     col5, col6 = st.columns(2)
     with col5:
         st.plotly_chart(accuracy_chart, use_container_width=True)
+        chart_text = get_pie_text(st.session_state["acc_by_type"])
+        with st.expander("What does this show?"):
+            st.markdown(chart_text, unsafe_allow_html=True)
 
     with col6:
         st.plotly_chart(cm, use_container_width=True)
-    
-    with st.expander("Help"):
-        st.markdown("""Accuracy of model tells you the percentage of true predictions. An accuracy of 70% thus means that the model \
-            predicts the correct label in 70% of the cases. 
-A way of unpacking accuracy is to look at True Positives (TPs), True Negatives (TNs), False Positives (FPs) and False Negatives (FNs).
-TP is the proportion of classifications that are correctly predicted to be class 1, while TN is correctly predicted class 0's. 
-Conversely, FP is porportion of misclassifications of class 0's and class 1's, and FN class 1's as class 0's.
-This is what is visualised in the pie chart when the 'Split by type' is checked, and in the confusion matrix. 
-You can read more on these measures on https://en.wikipedia.org/wiki/Confusion_matrix""")
+        cm_text = get_cm_text()
+        with st.expander("What does this show?"):
+            st.markdown(cm_text, unsafe_allow_html=True)
+
 
 if __name__ == "__main__":
 
