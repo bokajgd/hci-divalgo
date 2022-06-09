@@ -113,9 +113,9 @@ def main(df, model):
         metrics_table.update_layout(height=400,
             margin=dict(
                 l=15,
-                r=15,
+                r=25,
                 b=0,
-                t=20))
+                t=10))
         
         st.plotly_chart(metrics_table, use_container_width=True)
         with st.expander("What does this show?"):
