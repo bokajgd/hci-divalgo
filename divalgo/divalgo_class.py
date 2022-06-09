@@ -270,7 +270,7 @@ def metrics_table(df, model, help=False):
             pre = ['Precision']
             sup = ['Support']
             acc = ['Accuracy']
-            headers = ['Metrics']
+            headers = ['Metric']
         else:
             f1.append(np.round(cr._get_value(0, i-1, takeable = True),3))
             rec.append(np.round(cr._get_value(1, i-1, takeable = True),3))
@@ -281,16 +281,37 @@ def metrics_table(df, model, help=False):
     
     if help:
         headers.append('Equation')
-        rec.append('$a^{2}+b^{2}=c^{2}$')
-        pre.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
-        sup.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
-        f1.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
-        acc.append('$\frac{TP+TN}{TP+TN+FP+FN}$')
+        rec.append("<i>TP &#8725; (TP + FN) <i>")
+        pre.append('<i>TP &#8725; (TP + FP) <i>')
+        sup.append('<i>Num. samples in class<i>')
+        f1.append('<i>2 &#8727; TP &#8725; (2 &#8727; TP + FP + FN)')
+        acc.append('<i> (TP + TN) &#8725; (TP + TN + FP + FN)<i>')
 
     matrix = np.column_stack((f1, rec, pre, acc, sup))
-
-    data=[go.Table(
-        columnwidth = [3.6,3,3],
+    
+    if not help:
+        data=[go.Table(
+            columnwidth = [3.6,3,3],
+            header=dict(values=[f"{col}" for col in headers],
+                        fill_color='#928374',
+                        line_color='#fecea8',
+                        line_width=1.5,
+                        align='center',
+                        font=dict(color='#2A363B', family="tahoma", size=18),
+                        height=40
+                        ),
+            cells=dict(values=matrix,
+                    fill_color='#2A363B',
+                        line_color='#928374',
+                    line_width=1.5,
+                    align='left',
+                    font=dict(color='#8B959A', family="tahoma", size=18),
+                    height=51
+                    ))
+        ]
+    else:
+        data=[go.Table(
+        columnwidth = [1.5,1, 1,2.7],
         header=dict(values=[f"{col}" for col in headers],
                     fill_color='#928374',
                     line_color='#fecea8',
@@ -304,8 +325,8 @@ def metrics_table(df, model, help=False):
                     line_color='#928374',
                 line_width=1.5,
                 align='left',
-                font=dict(color='#8B959A', family="tahoma", size=18),
-                height=51
+                font=dict(color='#8B959A', family="tahoma", size=14),
+                height=45
                 ))
     ]
 
@@ -373,6 +394,7 @@ class Evaluate:
         fig = coef_heatmaps(self.model)
         fig.show()
 
-    def get_metrics(self):
-        fig = metrics_table(self.df, self.model)
+    def get_metrics(self, equations):
+        fig, matrix = metrics_table(self.df, self.model, equations)
         fig.show()
+        return matrix
