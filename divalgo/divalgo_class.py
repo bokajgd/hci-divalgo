@@ -305,7 +305,7 @@ def metrics_table(df, model, help=False):
                 line_width=1.5,
                 align='left',
                 font=dict(color='#8B959A', family="tahoma", size=18),
-                height=51
+                height=50
                 ))
     ]
 

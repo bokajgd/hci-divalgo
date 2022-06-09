@@ -51,7 +51,7 @@ def main(df, model):
     <br>
     ''', unsafe_allow_html=True)
 
-    st.markdown(f'''<p style="font-family:Tahoma; text-align:center; font-size: 14px;">You have trained a {model_type} with {str(n_classes)} using {pen} regularisation. The model 
+    st.markdown(f'''<p style="font-family:Tahoma; text-align:center; font-size: 14px;">You have trained a {model_type} with {str(n_classes)} classes using {pen} regularisation. The model 
     was trained for a maximum of {str(max_iter)} iterations <br> using the {solver} solver with a
     tolerance set to {tol}. Enjoy exploring your model.
      <br> <br> <br> </p>''', unsafe_allow_html=True)

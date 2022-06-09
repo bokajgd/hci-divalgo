@@ -23,8 +23,8 @@ def sample_image(df, error_class, prediction_type, class_list, n_images):
     # Strings to return
     if bool_pred == 1:
         other = error_class 
-    else:
-        other = class_list[class_list!=error_class][0]
+    elif bool_pred == 0:
+        other = [i for i in class_list if i != error_class][0]
     
     if error_class == "dog":
         own = "dogs"
