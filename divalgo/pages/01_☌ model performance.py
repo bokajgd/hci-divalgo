@@ -98,15 +98,8 @@ def main(df, model):
 
     # metrics_table = div.metrics_table(df, model)
     col1, col2 = st.columns(2)
+   
     with col1:
-        auc_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> AUC-ROC Curve</p>'
-        st.markdown(auc_title, unsafe_allow_html=True)   
-        st.plotly_chart(roc, use_container_width=True)
-        aucroc_text = get_aucroc_text()
-        with st.expander("What does this show?"):
-            st.markdown(aucroc_text, unsafe_allow_html=True)
-    
-    with col2:
         table_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> Metrics Table</p>'
         st.markdown(table_title, unsafe_allow_html=True)   
         eq_help = st.checkbox("See equations")
@@ -128,6 +121,16 @@ def main(df, model):
         with st.expander("What does this show?"):
             table_text = get_table_text()
             st.markdown(table_text, unsafe_allow_html=True)
+
+    with col2:
+        auc_title = '<p style="font-family:Tahoma; text-align:center;  color:#928374; font-size: 25px;"> <br> AUC-ROC Curve</p>'
+        st.markdown(auc_title, unsafe_allow_html=True)   
+        st.plotly_chart(roc, use_container_width=True)
+        aucroc_text = get_aucroc_text()
+        with st.expander("What does this show?"):
+            st.markdown(aucroc_text, unsafe_allow_html=True)
+
+
 
     acc = accuracy_score(df["y_test"], df["y_pred"])
     if "acc_by_type" not in st.session_state:
