@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img src="divalgo/logos/logo.png" alt="Logo" width="500" height="200">
+    <img src="divalgo/logos/logo.png" alt="Logo" width="500" height="180">
   </a>
 
 
