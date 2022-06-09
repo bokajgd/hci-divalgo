@@ -27,7 +27,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About the project
 
-This project contains the exam for the course Human Computer Interaction.
+This project contains the exam for the course Human Computer Interaction. 
+It consists of a streamlit dashboard for visualizating trained machine learning models. 
 
 ## Abstract
 An interactive tool for diagnoising and evaluating machine learning algorithms.
@@ -39,24 +40,34 @@ For running the scripts, we recommend following the below steps in your bash-ter
 
 ### Cloning repository and creating virtual environment
 
-The below code will clone the repository.
+Clone repository and make virtual environment
 
-__MAC/LINUX/WORKER02__
 ```bash
 git clone https://github.com/bokajgd/hci-divalgo.git
-cd data-science-exam
-```
-__WINDOWS:__
-```bash
-git clone https://github.com/bokajgd/hci-divalgo.git
-cd data-science-exam
+cd hci-divalgo
 ```
 
 ### Virtual environment
 
-As the code runs on a number of dependencies that may be prone to changes, please use the included file  ```requirements.txt``` to setup a virtual environment.
+Create and activate a new virtual environment your preferred way, and install the required packages in it.
+Using pip, it is done by running
 
-After cloning the repo, creating the virtual environment you should be ready to go.
+```bash
+python3 -m venv divalgo
+source divalgo/bin/activate
+pip install -r requirements.txt
+```
+
+### Run the demo
+This repository comes with a Jupyter notebook (divalgo/demo.ipynb) demonstrating the visualization tool, using the dataset 'dogs vs wolfs' from Kaggle.
+The dataset can be found <a href="https://www.kaggle.com/datasets/harishvutukuri/dogs-vs-wolves">here</a>.
+To run the demonstration, download the data and place the 'data' folder in the top level of this project (see folder structure below). 
+Then navigate to the directory of the demonstration notebook by running
+
+```bash
+cd divalgo
+```
+Open and run the notebook (demo.ipynb) to follow the demonstration and reproduce the figures presented in the synopsis. 
 
 <!-- REPOSITORY STRUCTURE -->
 ## Repository structure
@@ -75,6 +86,9 @@ This repository has the following structure:
 │   ├── divalgo_class.py   <- script with class and main functions 
 │   ├── utils.py           <- script with helper-functions for the class and app 
 │   └──🚪frontpage.py      <- main streamlit file and frontpage
+├── data                   <- folder containing the data - dogs vs wolf from Kaggle for the demonstration     
+|   ├── dogs               <- folder containing images of dogs
+|   └── wolves              <- folder containing images of wolves
 ├── .gitignore                 
 ├── synopsis.pdf           <- the synopsis for the project
 ├── README.md              <- the top-level README
