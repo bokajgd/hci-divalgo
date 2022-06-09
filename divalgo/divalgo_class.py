@@ -395,5 +395,5 @@ class Evaluate:
         fig.show()
 
     def get_metrics(self, equations=False):
-        fig, matrix = metrics_table(self.df, self.model, equations=equations)
+        fig = metrics_table(self.df, self.model, help=equations)
         fig.show()
