@@ -124,12 +124,11 @@ This repository has the following structure:
 │   ├── demo.ipynb         <- jupyter notebook demonstrating the use of the class
 │   ├── divalgo_class.py   <- script with class and main functions 
 │   ├── utils.py           <- script with helper-functions for the class and app 
-│   └──🚪frontpage.py      <- main streamlit file and frontpage
+│   └── ☌frontpage.py      <- main streamlit file and frontpage
 ├── data                   <- folder containing the data - dogs vs wolf from Kaggle for the demonstration     
 |   ├── dogs               <- folder containing images of dogs
-|   └── wolves              <- folder containing images of wolves
+|   └── wolves             <- folder containing images of wolves
 ├── .gitignore                 
-├── synopsis.pdf           <- the synopsis for the project
 ├── README.md              <- the top-level README
 └── requirements.txt       <- required packages
 ```
