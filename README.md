@@ -1,11 +1,11 @@
 
 <p align="center">
-    <img src="divalgo/logos/logo.png" alt="Logo" width="500" height="180">
+    <img src="divalgo/logos/logo_readme.png" alt="Logo" width="500" height="180">
   </a>
 
 
 <br />
-  <h1 align="center">Divalgo - An interactive tool for diagnosing and evaluating machine learning algorithms
+  <h1 align="center">divalgo - An interactive tool for diagnosing and evaluating machine learning algorithms
  </h1>
  <h1 align="center">Human Computer Interaction Exam 2022</h1>
 
