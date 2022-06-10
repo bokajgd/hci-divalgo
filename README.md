@@ -101,12 +101,12 @@ The first page is intended to provide the user with a general overview of the pr
 ### Model Predictions
 The second page, allows the user to sample images from the test set. The idea is to allow the user to look for consistencies in false predictions by adjusting various variables.
 
-![model_performance_gif](divalgo/logos/model_performance.gif)
+![model_predictions_gif](divalgo/logos/model_prediction.gif)
 
 ### Model Workings
 The third page comprises the main capacities to delve into the model workings. This page enables the user to intuitively engage with the image data in direct relation to the predictions made by the model. The main element of the page is a large interactive scatterplot that shows embeddings of the test images projected onto a 2D plane. Furthermore, the page contains coefficient heatmaps that enable the user to investigate the average influence of the individual pixels in the model predictions.
 
-![model_performance_gif](divalgo/logos/model_performance.gif)
+![model_workings_gif](divalgo/logos/model_workings.gif)
 
 <!-- REPOSITORY STRUCTURE -->
 ## Repository structure
