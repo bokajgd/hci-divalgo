@@ -83,27 +83,30 @@ Open and run the notebook (demo.ipynb) to follow the demonstration. The final ch
 ## Dashboard Structure
 The dashboard consists of a front page and three pages containing various functions. The content and functions of each page is shown and described below.
 
-<p align="center">
-    <img src="divalgo/logos/frontpage.png" alt="Logo" width="848" height="450">
-</a>
+
 
 ### Front Page
 Upon launching the dashboard, the user lands on the front page. In addition to the logo, the landing page includes a short description of the dashboard functionalities and structure as well as a short prosaic description of the model that was passed to the class. This allows the use to quickly determine that everything has been initiated correctly.
 
-gif
+<p align="center">
+    <img src="divalgo/logos/frontpage.png" alt="Logo" width="848" height="450">
+</a>
 
 ### Model Performance
 The first page is intended to provide the user with a general overview of the predictive performance of the model, akin to the kind of explorations commonly undertaken when evaluating a model. It displays a table with performancee metrics, an AUC-ROC curve, a pie chart showing performance accuracies and a confusion matrix.
 
+
+![model_performance_gif](divalgo/logos/model_performance.gif)
+
 ### Model Predictions
 The second page, allows the user to sample images from the test set. The idea is to allow the user to look for consistencies in false predictions by adjusting various variables.
 
-gif
+![model_performance_gif](divalgo/logos/model_performance.gif)
 
 ### Model Workings
 The third page comprises the main capacities to delve into the model workings. This page enables the user to intuitively engage with the image data in direct relation to the predictions made by the model. The main element of the page is a large interactive scatterplot that shows embeddings of the test images projected onto a 2D plane. Furthermore, the page contains coefficient heatmaps that enable the user to investigate the average influence of the individual pixels in the model predictions.
 
-gif
+![model_performance_gif](divalgo/logos/model_performance.gif)
 
 <!-- REPOSITORY STRUCTURE -->
 ## Repository structure
