@@ -83,7 +83,9 @@ Open and run the notebook (demo.ipynb) to follow the demonstration. The final ch
 ## Dashboard Structure
 The dashboard consists of a front page and three pages containing various functions. The content and functions of each page is shown and described below.
 
-plot
+<p align="center">
+    <img src="divalgo/logos/frontpage.png" alt="Logo" width="955" height="572">
+</a>
 
 ### Front Page
 Upon launching the dashboard, the user lands on the front page. In addition to the logo, the landing page includes a short description of the dashboard functionalities and structure as well as a short prosaic description of the model that was passed to the class. This allows the use to quickly determine that everything has been initiated correctly.
