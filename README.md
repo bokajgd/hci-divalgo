@@ -84,7 +84,7 @@ Open and run the notebook (demo.ipynb) to follow the demonstration. The final ch
 The dashboard consists of a front page and three pages containing various functions. The content and functions of each page is shown and described below.
 
 <p align="center">
-    <img src="divalgo/logos/frontpage.png" alt="Logo" width="955" height="572">
+    <img src="divalgo/logos/frontpage.png" alt="Logo" width="848" height="450">
 </a>
 
 ### Front Page
