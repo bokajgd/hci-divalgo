@@ -96,17 +96,17 @@ Upon launching the dashboard, the user lands on the front page. In addition to t
 The first page is intended to provide the user with a general overview of the predictive performance of the model, akin to the kind of explorations commonly undertaken when evaluating a model. It displays a table with performancee metrics, an AUC-ROC curve, a pie chart showing performance accuracies and a confusion matrix.
 
 
-![model_performance_gif](divalgo/logos/model_performance.gif)
+![model_performance_gif](divalgo/logos/287183611_522189149650998_5340536804504396952_n.png)
 
 ### Model Predictions
 The second page, allows the user to sample images from the test set. The idea is to allow the user to look for consistencies in false predictions by adjusting various variables.
 
-![model_predictions_gif](divalgo/logos/model_prediction.gif)
+![model_predictions_gif](divalgo/logos/285241967_436731121622332_8544655380770813958_n.png)
 
 ### Model Workings
 The third page comprises the main capacities to delve into the model workings. This page enables the user to intuitively engage with the image data in direct relation to the predictions made by the model. The main element of the page is a large interactive scatterplot that shows embeddings of the test images projected onto a 2D plane. Furthermore, the page contains coefficient heatmaps that enable the user to investigate the average influence of the individual pixels in the model predictions.
 
-![model_workings_gif](divalgo/logos/model_workings.gif)
+![model_workings_gif](divalgo/logos/286499733_973199936699873_8676491151254122134_n.png)
 
 <!-- REPOSITORY STRUCTURE -->
 ## Repository structure
