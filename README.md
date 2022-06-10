@@ -5,9 +5,9 @@
 
 
 <br />
-  <h1 align="center">divalgo - An interactive tool for diagnosing and evaluating machine learning algorithms
+  <h1 align="center">divalgo - an interactive tool for diagnosing and evaluating machine learning algorithms
  </h1>
- <h1 align="center">Human Computer Interaction Exam 2022</h1>
+ <h2 align="center">Human Computer Interaction Exam 2022</h2>
 
   <p align="center">
     Frida Hæstrup, Stine Nyhus Larsen and Jakob Grøhn Damgaard
