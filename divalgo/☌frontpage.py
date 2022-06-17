@@ -50,10 +50,10 @@ def main(df, model):
     ___________________________________________________
     <br>
     ''', unsafe_allow_html=True)
-
-    st.markdown(f'''<p style="font-family:Tahoma; text-align:center; font-size: 14px;">You have trained a {model_type} with {str(n_classes)} classes using {pen} regularisation. The model 
-    was trained for a maximum of {str(max_iter)} iterations <br> using the {solver} solver with a
-    tolerance set to {tol}. Enjoy exploring your model.
+    st.markdown(f'''<p style="font-family:Tahoma; text-align:center; font-size: 16px;" Your model specifications:</p>''', unsafe_allow_html=True)
+    st.markdown(f'''<p style="font-family:Tahoma; text-align:center; font-size: 14px;">You have trained a <em>{model_type}</em> with <em>{str(n_classes)}</em> classes using <em>{pen}</em> regularisation. The model 
+    was trained for a maximum of <em>{str(max_iter)} iterations</em> <br> using the <em>{solver}</em> solver with a
+    tolerance set to <em>{tol}</em>. Enjoy exploring your model.
      <br> <br> <br> </p>''', unsafe_allow_html=True)
 
     r2c1, r2c2, r2c3 , r2c4, r2c5 = st.columns([2,1,2,1,2])
