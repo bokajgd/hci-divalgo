@@ -1,11 +1,10 @@
-from pickle import TRUE
 import streamlit as st
 import os
 from PIL import Image 
 
 def info_pred_type(prediction_type:str):
     if prediction_type == "True predictions":
-        return 1, "classified"
+        return 1, "correctly classified"
     if prediction_type == "False predictions":
         return 0, "misclassified"
 
@@ -44,37 +43,34 @@ def main(df):
     page_intro = '''<p style="font-family:Tahoma; font-size: 15px;" >This page lets you explore the test data 
     in relation to the decisions made by the model. Choose whether you want to see true predictions or false predictions
     from either one of the categories using the instruments below. <br>
-    _________________________________________________________________________________________________________________</p>'''
+    ____________________________________________________________________________________________________________________</p>'''
     st.markdown(page_intro, unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
-    with col1:
+    with col1: # User chooses class to see predictions for
         class_list = df["y_test"].unique()
         class_list = [i.capitalize() for i in class_list]
         error_class = st.radio("Choose class", class_list)
-    with col2:
+    with col2: # User chooses between true and false predictions 
         prediction_type = st.radio("Choose prediction type", ["True predictions", "False predictions"])
 
-    col3, col4 = st.columns((2.3,1))
-    with col3:
+    col3, _ = st.columns((2.3,1))
+    with col3: # User chooses number of images to see
         n_images = st.slider("Choose how many images you want to see", 3, 12, 6, 3)
 
     if "images" not in st.session_state or  "classification" not in st.session_state or  "other" not in st.session_state or "own" not in st.session_state:
         images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
         st.session_state["images"] = images
-        st.session_state["classification"] = classification
-        st.session_state["own"] = own
-        st.session_state["other"] = other
 
+    images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
+    st.session_state["images"] = images
     
     click = st.button("Get new examples")    
     if click:
         images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
         st.session_state["images"] = images
-        st.session_state["classification"] = classification
-        st.session_state["own"] = own
-        st.session_state["other"] = other
-    class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {st.session_state["own"]} were {st.session_state["classification"]} as {st.session_state["other"]}</p>'
+
+    class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {own} were {classification} as <em>{other}</em></p>'
     st.markdown(class_str, unsafe_allow_html=True)
     st.image(st.session_state["images"], width=312)
 
