@@ -1,6 +1,8 @@
 import streamlit as st
 import os
 from PIL import Image 
+import time
+from playsound import playsound
 
 def info_pred_type(prediction_type:str):
     if prediction_type == "True predictions":
@@ -77,8 +79,9 @@ def main(df):
     images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
     st.session_state["images"] = images
     
-    click = st.button("Get new examples")    
+    click = st.button("Show new examples")    
     if click:
+        playsound(os.path.join('logos', 'new_img.mp3'))
         images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
         st.session_state["images"] = images
 
