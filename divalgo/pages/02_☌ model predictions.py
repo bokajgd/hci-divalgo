@@ -57,7 +57,7 @@ def main(df):
     page_intro = '''<p style="font-family:Tahoma; font-size: 15px;" >This page lets you explore the test data 
     in relation to the decisions made by the model. Choose whether you want to see true predictions or false predictions
     from either one of the categories using the instruments below. <br>
-    ____________________________________________________________________________________________________________________</p>'''
+    __________________________________________________________________________________________________________________</p>'''
     st.markdown(page_intro, unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
