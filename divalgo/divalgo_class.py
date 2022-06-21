@@ -136,7 +136,7 @@ def confusion_mat(y_test, y_pred, colors):
 
 
 # Defining function for interactive embedding plot
-def embedding_plot(df, size, colour=False, new_df=None):
+def embedding_plot(df, size, palette, colour=False, new_df=None):
 
     if not isinstance(new_df, pd.DataFrame): 
         embeddings_2d, image_arrays = get_embeddings(df)
@@ -147,7 +147,8 @@ def embedding_plot(df, size, colour=False, new_df=None):
     if colour:
         color_mapping_dw = CategoricalColorMapper(factors=["Dog", "Wolf"], palette=["#8B959A", "#FECEA8"])
     else:
-        color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
+        # color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=["#99B898", "#FF847C"])
+        color_mapping = CategoricalColorMapper(factors=["True", "False"], palette=[palette[i] for i in [0,2]])
     
     p1 = figure(plot_width=800, plot_height=700,
                 tools=('pan, wheel_zoom, reset, box_zoom'), 
@@ -385,7 +386,7 @@ class Evaluate:
         fig.show()
 
     def explore_embeddings(self):
-        p, _ = embedding_plot(df=self.df, size = 10)
+        p, _ = embedding_plot(df=self.df, size = 10, palette = self.colors)
         show(p)
     
     def plot_roc_curve(self):

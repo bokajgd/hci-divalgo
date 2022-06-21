@@ -65,7 +65,19 @@ def get_table_text():
 
 
 def main(df, model):
-    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ", unsafe_allow_html=True)
+    st.sidebar.markdown("<br> <br> <br> <br> <br>", unsafe_allow_html=True)
+    if "color_blind" not in st.session_state:
+        st.session_state["color_blind"] = False
+        st.session_state["value"] = False
+    color_blind=st.sidebar.checkbox("Use colour blind friendly colors", value=st.session_state["color_blind"])
+    
+    st.session_state["color_blind"] = color_blind
+
+    if st.session_state["color_blind"]:
+        st.session_state["colors"] = ["#44AA99", "#117733", "#DDCC77", "#997700"]
+    else:
+        st.session_state["colors"] = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
 
     with st.sidebar.container():
         image = Image.open(os.path.join("logos", "trans_logo.png"))
@@ -144,10 +156,10 @@ def main(df, model):
         st.session_state["acc_by_type"]=acc_by_type 
     
     if not st.session_state["acc_by_type"]:
-        accuracy_chart = div.accuracy_chart(acc, colors=[colors[i] for i in [0,2]])
+        accuracy_chart = div.accuracy_chart(acc, colors=[st.session_state["colors"][i] for i in [0,2]])
     if st.session_state["acc_by_type"]:
         tn, fp, fn, tp = confusion_matrix(df["y_test"], df["y_pred"]).ravel()
-        accuracy_chart = div.accuracy_chart_type((tp,tn,fp,fn), colors=colors)
+        accuracy_chart = div.accuracy_chart_type((tp,tn,fp,fn), colors=st.session_state["colors"])
     accuracy_chart.update_layout(
         margin=dict(
             l=10,
@@ -165,7 +177,7 @@ def main(df, model):
     ####################
     # Confusion matrix #
     ####################
-    cm_colors = [colors[0], colors[3], colors[2], colors[1]]
+    cm_colors = [st.session_state["colors"][0], st.session_state["colors"][3], st.session_state["colors"][2], st.session_state["colors"][1]]
     cm = div.confusion_mat(df["y_test"], df["y_pred"], cm_colors)
     cm.update_layout(
         margin=dict(
