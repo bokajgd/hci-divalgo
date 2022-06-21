@@ -74,9 +74,6 @@ def main(df, model):
         same shape as the training images were transformed into (50x50 pixels). Positive values indicate coefficients that push image prediction toward 
         the class 'dog'. Negative values co indicate coefficients that push image prediction toward the class 'wolf'. </p>'''
 
-        with st.expander('What does this show?'):
-            st.markdown(coef_intro, unsafe_allow_html=True)
-
         coef_heatmaps = div.coef_heatmaps(model)
         coef_heatmaps.update_layout(
             margin=dict(
@@ -89,10 +86,11 @@ def main(df, model):
         )
         st.plotly_chart(coef_heatmaps, use_container_width=True)
 
+        with st.expander('What does this show?'):
+            st.markdown(coef_intro, unsafe_allow_html=True)
+
         abs_intro = '''<p style="font-family:Tahoma; font-size: 13px;" >The plot below shows a heatmap of the absolute 
         magnitude of the coefficient. Thus, higher values indicate pixels with higher influence on the predictions. </p>'''
-        with st.expander('What does this show?'):
-            st.markdown(abs_intro, unsafe_allow_html=True)
 
         abs_heatmaps = div.coef_heatmaps(model, absolute=True)
         abs_heatmaps.update_layout(
@@ -105,6 +103,9 @@ def main(df, model):
             )
         )
         st.plotly_chart(abs_heatmaps, use_container_width=True)
+
+        with st.expander('What does this show?'):
+            st.markdown(abs_intro, unsafe_allow_html=True)
 
 
 
