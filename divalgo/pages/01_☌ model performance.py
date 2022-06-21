@@ -9,7 +9,7 @@ import shutil
 from PIL import Image
 
 colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
-#st.set_page_config(page_title="DIVALGO", layout="wide")
+st.set_page_config(page_title="DIVALGO", layout="wide")
 
 def get_pie_text(acc_by_type):
     if acc_by_type:

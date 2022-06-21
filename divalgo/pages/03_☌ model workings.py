@@ -13,7 +13,7 @@ from bokeh.themes import Theme
 from bokeh.themes import built_in_themes
 
 
-#st.set_page_config(page_title="DIVALGO", layout="wide")
+st.set_page_config(page_title="DIVALGO", layout="wide")
 
 
 def main(df, model):
