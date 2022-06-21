@@ -34,7 +34,7 @@ def accuracy_chart_type(confusion:tuple,
         data=[go.Pie(labels=df["Type"], 
                      values=df["Value"], 
                      sort=False,
-                     direction="clockwise")]
+                     direction="clockwise", hoverinfo='none')]
     )
     fig.update_traces(textposition='inside', textinfo='percent+label', marker = dict(colors = colors), textfont_size=16)
     fig.update_layout(showlegend=False, font_family="Tahoma")
@@ -60,7 +60,7 @@ def accuracy_chart(accuracy,
     df = pd.DataFrame({"Value":sizes,"Type":labels})
 
     fig = go.FigureWidget()
-    fig.add_pie(values=df["Value"], labels=df["Type"], marker = dict(colors=colors))
+    fig.add_pie(values=df["Value"], labels=df["Type"], marker = dict(colors=colors), hoverinfo='none')
     fig.update_traces(textposition='inside', textinfo='percent+label', textfont_size=16)
     fig.update_layout(showlegend=False,
                       font_family="Tahoma")
@@ -106,7 +106,8 @@ def confusion_mat(y_test, y_pred, colors):
                                       x=labelsx, 
                                       y=labelsy, 
                                       annotation_text=z_text, 
-                                      colorscale=mycolors
+                                      colorscale=mycolors,
+                                      hoverinfo='none'
                                       )
     fig.update_yaxes(tickangle=270)
 
