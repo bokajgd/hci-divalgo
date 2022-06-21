@@ -46,7 +46,7 @@ def main(df):
     #     colors = ["#44AA99", "#117733", "#DDCC77", "#997700"]
     # else:
     #     colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
-    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
 
     with st.sidebar.container():
         image = Image.open(os.path.join("logos", "trans_logo.png"))
@@ -78,17 +78,23 @@ def main(df):
 
     images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
     st.session_state["images"] = images
-    
-    click = st.button("Show new examples")    
+
+    click = st.button("Show new examples")
+
+    # Update with new images when button clicked
     if click:
-        playsound(os.path.join('logos', 'new_img.mp3'))
-        images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)
+        images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)    
         st.session_state["images"] = images
+        class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {own} were {classification} as <em>{other}</em></p>'
+        st.markdown(class_str, unsafe_allow_html=True)
+        st.image(st.session_state["images"], width=312)
+        playsound(os.path.join('logos', 'new_img.mp3'))
 
-    class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {own} were {classification} as <em>{other}</em></p>'
-    st.markdown(class_str, unsafe_allow_html=True)
-    st.image(st.session_state["images"], width=312)
-
+    # If button has not yet been pressed, display some images
+    if 'click' not in globals(): 
+        class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {own} were {classification} as <em>{other}</em></p>'
+        st.markdown(class_str, unsafe_allow_html=True)
+        st.image(st.session_state["images"], width=312)
 
 if __name__ == "__main__":
     df = st.session_state["data"]

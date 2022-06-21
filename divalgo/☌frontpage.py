@@ -24,7 +24,7 @@ def main(df, model):
     #     colors = ["#44AA99", "#117733", "#DDCC77", "#997700"]
     # else:
     #     colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
-    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
 
     with st.sidebar.container():
         image = Image.open(os.path.join("logos", "trans_logo.png"))
