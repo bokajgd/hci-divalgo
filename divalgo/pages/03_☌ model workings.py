@@ -42,22 +42,20 @@ def main(df, model):
         point_size = st.slider('Choose size of points on slider', 0, 50, 10, 5)
 
     with col2: 
-        empty = '<p <br> </p>'
-        st.markdown(empty, unsafe_allow_html=True)  
-        color_emb_plt = st.checkbox("Colour by class")
+        color_emb_plt = st.radio("Colour by", ["True/False predictions", "Class"])
         st.session_state["color_emb_plt"]=color_emb_plt 
 
     col4, col5 = st.columns((3,1))
     with col4:
         if not "embeddings" in st.session_state:
-            if not st.session_state["color_emb_plt"]:
+            if st.session_state["color_emb_plt"] == "True/False predictions":
                 embedding_plot, embeddings = div.embedding_plot(df,size=point_size)
                 st.session_state["embeddings"] = embeddings
             else:
                 embedding_plot, embeddings = div.embedding_plot(df, colour=True, size=point_size)
                 st.session_state["embeddings"] = embeddings
         else:
-            if not st.session_state["color_emb_plt"]:
+            if st.session_state["color_emb_plt"] == "True/False predictions":
                 embedding_plot, embeddings = div.embedding_plot(df,size=point_size, new_df=st.session_state["embeddings"] )
             else:
                 embedding_plot, embeddings = div.embedding_plot(df, colour=True, size=point_size, new_df=st.session_state["embeddings"] )
