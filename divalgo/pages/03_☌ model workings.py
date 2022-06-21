@@ -21,7 +21,7 @@ def main(df, model):
     if "color_blind" not in st.session_state:
         st.session_state["color_blind"] = False
         st.session_state["value"] = False
-    color_blind=st.sidebar.checkbox("Use colour blind friendly colors", value=st.session_state["color_blind"])
+    color_blind=st.sidebar.checkbox("Use colourblind friendly colors", value=st.session_state["color_blind"])
     
     st.session_state["color_blind"] = color_blind  
 
