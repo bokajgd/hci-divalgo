@@ -32,7 +32,7 @@ def sample_image(df, error_class, prediction_type, class_list, n_images):
     return images, classification, own, other
 
 def main(df):
-    st.sidebar.markdown("<br> <br> <br> <br> <br>", unsafe_allow_html=True)
+    st.sidebar.markdown("", unsafe_allow_html=True)
     if "color_blind" not in st.session_state:
         st.session_state["color_blind"] = False
         st.session_state["value"] = False    
@@ -44,7 +44,7 @@ def main(df):
         colors = ["#44AA99", "#117733", "#DDCC77", "#997700"]
     else:
         colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
-    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
 
     with st.sidebar.container():
         image = Image.open(os.path.join("logos", "trans_logo.png"))

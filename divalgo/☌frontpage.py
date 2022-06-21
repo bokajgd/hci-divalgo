@@ -9,11 +9,14 @@ from PIL import Image
 import re
 
 def main(df, model):
-    st.sidebar.markdown("<br> <br> <br> <br> <br>", unsafe_allow_html=True)
+
+    st.set_page_config(page_title="DIVALGO", layout="wide")
+
+    st.sidebar.markdown("", unsafe_allow_html=True)
     if "color_blind" not in st.session_state:
         st.session_state["color_blind"] = False
         st.session_state["value"] = False
-    color_blind=st.sidebar.checkbox("Use colour blind friendly colors", value=st.session_state["color_blind"])
+    color_blind=st.sidebar.checkbox("Use colourblind friendly colors", value=st.session_state["color_blind"])
     
     st.session_state["color_blind"] = color_blind
 
@@ -21,12 +24,11 @@ def main(df, model):
         colors = ["#44AA99", "#117733", "#DDCC77", "#997700"]
     else:
         colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
-    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
+    st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
 
     with st.sidebar.container():
         image = Image.open(os.path.join("logos", "trans_logo.png"))
         st.image(image, use_column_width=True)
-    st.set_page_config(page_title="DIVALGO", layout="wide")
 
     r1c1, r1c2, r1c3 = st.columns([1.5,5,1.5])
 
