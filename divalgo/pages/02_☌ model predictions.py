@@ -2,7 +2,7 @@ import streamlit as st
 import os
 from PIL import Image 
 import time
-from playsound import playsound
+# from playsound import playsound
 
 def info_pred_type(prediction_type:str):
     if prediction_type == "True predictions":
@@ -34,18 +34,6 @@ def sample_image(df, error_class, prediction_type, class_list, n_images):
     return images, classification, own, other
 
 def main(df):
-    # st.sidebar.markdown("", unsafe_allow_html=True)
-    # if "color_blind" not in st.session_state:
-    #     st.session_state["color_blind"] = False
-    #     st.session_state["value"] = False    
-    # color_blind=st.sidebar.checkbox("Use colour blind friendly colors", value=st.session_state["color_blind"])
-    
-    # st.session_state["color_blind"] = color_blind
-
-    # if st.session_state["color_blind"]:
-    #     colors = ["#44AA99", "#117733", "#DDCC77", "#997700"]
-    # else:
-    #     colors = ["#99B898", "#42823C", "#FF847C", "#E84A5F", "#2A363B"]
     st.sidebar.markdown("<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>", unsafe_allow_html=True)
 
     with st.sidebar.container():
@@ -90,7 +78,7 @@ def main(df):
         class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {own} were {classification} as <em>{other}</em></p>'
         st.markdown(class_str, unsafe_allow_html=True)
         st.image(st.session_state["images"], width=312)
-        playsound(os.path.join('logos', 'new_img.mp3'))
+        # playsound(os.path.join('logos', 'new_img.mp3'))
         click_counter += 1
 
     # If button has not yet been pressed, display some images
