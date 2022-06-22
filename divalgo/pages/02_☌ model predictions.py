@@ -81,6 +81,8 @@ def main(df):
 
     click = st.button("Show new examples")
 
+    click_counter = 0
+
     # Update with new images when button clicked
     if click:
         images, classification, own, other = sample_image(df, error_class, prediction_type, class_list, n_images)    
@@ -89,12 +91,14 @@ def main(df):
         st.markdown(class_str, unsafe_allow_html=True)
         st.image(st.session_state["images"], width=312)
         playsound(os.path.join('logos', 'new_img.mp3'))
+        click_counter += 1
 
     # If button has not yet been pressed, display some images
     if 'click' not in globals(): 
-        class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {own} were {classification} as <em>{other}</em></p>'
-        st.markdown(class_str, unsafe_allow_html=True)
-        st.image(st.session_state["images"], width=312)
+        if click_counter == 0:
+            class_str =f'<p style="font-family:Tahoma;  color:#928374; font-size: 25px;">These {own} were {classification} as <em>{other}</em></p>'
+            st.markdown(class_str, unsafe_allow_html=True)
+            st.image(st.session_state["images"], width=312)
 
 if __name__ == "__main__":
     df = st.session_state["data"]
